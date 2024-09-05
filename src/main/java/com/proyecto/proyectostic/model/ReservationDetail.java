@@ -3,17 +3,15 @@ package com.proyecto.proyectostic.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
-
 @Entity
-@IdClass(ReservationDetailId.class)
 public class ReservationDetail {
 
     @Id
+    @Column(name="reservation_id")
     private Integer reservationId;
 
     @Id
+    @Column(name="seat_id")
     private Integer seatId;
 
     @ManyToOne
@@ -24,5 +22,35 @@ public class ReservationDetail {
     @JoinColumn(name = "seat_id", nullable = false, insertable = false, updatable = false)
     private Seat seat;
 
-    // Getters y setters
+    public Integer getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public Integer getSeatId() {
+        return seatId;
+    }
+
+    public void setSeatId(Integer seatId) {
+        this.seatId = seatId;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
 }

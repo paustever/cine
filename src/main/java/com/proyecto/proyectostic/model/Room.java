@@ -13,5 +13,19 @@ public class Room {
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 
-    // Getters y setters
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
 }

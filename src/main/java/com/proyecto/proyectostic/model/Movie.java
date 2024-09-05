@@ -102,5 +102,4 @@ public class Movie {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    // Getters y setters
 }

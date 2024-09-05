@@ -18,5 +18,43 @@ public class Cinema {
     private String telephone;
     private Integer noRoom;
 
-    // Getters y setters
+    public Integer getCinemaId() {
+        return cinemaId;
+    }
+
+    public void setCinemaId(Integer cinemaId) {
+        this.cinemaId = cinemaId;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public Integer getNoRoom() {
+        return noRoom;
+    }
+
+    public void setNoRoom(Integer noRoom) {
+        this.noRoom = noRoom;
+    }
 }

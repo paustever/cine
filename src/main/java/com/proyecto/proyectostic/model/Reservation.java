@@ -16,5 +16,27 @@ public class Reservation {
 
     private Date date;
 
-    // Getters y setters
+    public Integer getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

@@ -1,12 +1,24 @@
 package com.proyecto.proyectostic.model;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class BillboardId implements Serializable {
     private Integer movieId;
     private Integer cinemaId;
 
-    // hashCode, equals, getters, setters
+    public Integer getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Integer movieId) {
+        this.movieId = movieId;
+    }
+
+    public Integer getCinemaId() {
+        return cinemaId;
+    }
+
+    public void setCinemaId(Integer cinemaId) {
+        this.cinemaId = cinemaId;
+    }
 }

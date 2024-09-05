@@ -4,11 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 
-// Elimina esta línea
-// import javax.persistence.*;
-
 @Entity
-@IdClass(BillboardId.class)
 public class Billboard {
 
     @Id
@@ -17,5 +13,19 @@ public class Billboard {
     @Id
     private Integer cinemaId;
 
-    // Getters y setters
+    public Integer getMovieId() {
+        return movieId;
+    }
+
+    public Integer getCinemaId() {
+        return cinemaId;
+    }
+
+    public void setCinemaId(Integer cinemaId) {
+        this.cinemaId = cinemaId;
+    }
+
+    public void setMovieId(Integer movieId) {
+        this.movieId = movieId;
+    }
 }
