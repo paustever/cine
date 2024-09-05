@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -23,6 +25,7 @@ public class UserService {
     }
 
     public Optional<User> getUserById(Integer id) {
+
         return userRepository.findById(id);
     }
 
@@ -33,4 +36,21 @@ public class UserService {
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
+
+    public User registerUser(User user){
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+        return userRepository.save(user);
+    }
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    public Optional<User> loginUser(String email, String password) {
+        Optional<User> userlogin = userRepository.findByEmail(email);
+        if (userlogin.isPresent()) {
+            User user = userlogin.get();
+            if (user.getPassword().equals(password)) {
+
+            }
 }
