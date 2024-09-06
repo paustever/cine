@@ -1,5 +1,6 @@
 package com.proyecto.proyectostic.service;
 
+import com.proyecto.proyectostic.excepcion.UserAlreadyExistsException;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +38,20 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User registerUser(User user){
+    public User registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new UserAlreadyExistsException("User already exists");
         }
         return userRepository.save(user);
     }
+
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public Optional<User> loginUser(String email, String password) {
         Optional<User> userlogin = userRepository.findByEmail(email);
         if (userlogin.isPresent()) {
             User user = userlogin.get();
-            if (user.getPassword().equals(password)) {
+            if (user.getPassword().equals(password)){}
 
-            }
-}
