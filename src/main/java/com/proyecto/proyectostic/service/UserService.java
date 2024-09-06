@@ -1,6 +1,9 @@
 package com.proyecto.proyectostic.service;
 
+import com.proyecto.proyectostic.excepcion.InvalidCredentialsException;
+import com.proyecto.proyectostic.excepcion.InvalidPasswordException;
 import com.proyecto.proyectostic.excepcion.UserAlreadyExistsException;
+import com.proyecto.proyectostic.excepcion.UserNotFoundException;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +29,6 @@ public class UserService {
     }
 
     public Optional<User> getUserById(Integer id) {
-
         return userRepository.findById(id);
     }
 
@@ -49,9 +51,34 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+
     public Optional<User> loginUser(String email, String password) {
-        Optional<User> userlogin = userRepository.findByEmail(email);
-        if (userlogin.isPresent()) {
-            User user = userlogin.get();
-            if (user.getPassword().equals(password)){}
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user;  // Login exitoso
+        } else {
+            throw new InvalidCredentialsException("Invalid email or password");  // Lanzar excepción si las credenciales son incorrectas
+        }
+    }
+
+    public User updateUser(Integer id, User updatedUser) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setName(updatedUser.getName());
+                    user.setLastName(updatedUser.getLastName());
+                    user.setEmail(updatedUser.getEmail());
+                    user.setTelephone(updatedUser.getTelephone());
+                    // Actualiza cualquier otro campo necesario
+                    return userRepository.save(user);
+                }).orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+    }
+
+    public Optional<User> getProfile(Integer id) {
+        return userRepository.findById(id);
+    }
+
+
+
+
+}
 

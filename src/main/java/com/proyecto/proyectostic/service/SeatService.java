@@ -1,5 +1,7 @@
 package com.proyecto.proyectostic.service;
 
+import com.proyecto.proyectostic.excepcion.SeatNotAvailableException;
+import com.proyecto.proyectostic.excepcion.SeatNotFoundException;
 import com.proyecto.proyectostic.model.Seat;
 import com.proyecto.proyectostic.repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,23 @@ public class SeatService {
 
     public void deleteSeat(Integer id) {
         seatRepository.deleteById(id);
+    }
+
+    public Seat reserveSeat(Integer seatId) {
+        Seat seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new SeatNotFoundException("Seat with ID " + seatId + " not found"));
+        if (!seat.isAvailable()) {
+            throw new SeatNotAvailableException("Seat with ID " + seatId + " is not available");
+        }
+        seat.setAvailable(false);
+        return seatRepository.save(seat);     }
+
+
+    public Seat releaseSeat(Integer seatId) {
+        Seat seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new SeatNotFoundException("Seat with ID " + seatId + " not found"));
+
+        seat.setAvailable(true);
+        return seatRepository.save(seat);
     }
 }

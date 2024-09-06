@@ -47,7 +47,7 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public Boolean getAvailable() {
+    public Boolean isAvailable() {
         return available;
     }
 
