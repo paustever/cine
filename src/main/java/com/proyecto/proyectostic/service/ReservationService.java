@@ -61,6 +61,22 @@ public class ReservationService {
         }
         reservationRepository.save(reservation);
     }
+    public void cancelReservation(Integer reservationId) throws Exception {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new Exception("Reservation not found"));
+
+        List<ReservationDetail> reservationDetails = reservationDetailRepository.findByReservationId(reservationId);
+
+        for (ReservationDetail detail : reservationDetails) {
+            Seat seat = detail.getSeat();
+            seat.setAvailable(true);
+            seatRepository.save(seat);
+        }
+
+        reservationDetailRepository.deleteAll(reservationDetails);
+        reservationRepository.delete(reservation);
+    }
+
 }
 
 
