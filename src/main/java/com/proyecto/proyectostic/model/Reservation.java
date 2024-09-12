@@ -20,6 +20,11 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservationDetail> reservationDetails;
 
+    @ManyToOne
+    @JoinColumn(name = "showtime_id")
+    private ShowTime showtime;
+
+
     public Integer getReservationId() {
         return reservationId;
     }
