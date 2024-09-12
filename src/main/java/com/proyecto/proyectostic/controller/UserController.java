@@ -47,41 +47,67 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(
+            @PathVariable Integer id,
+            @RequestBody User updatedUser,
+            @RequestHeader("Authorization") String token) {
         try {
-            User user = userService.updateUser(id, updatedUser);
-            return ResponseEntity.ok(user);  // Devuelve el usuario actualizado con 200 OK
+            User user = userService.updateUser(id, updatedUser, token);
+            return ResponseEntity.ok(user);  // Devuelve 200 OK si la actualización es exitosa
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(401).build();  // Devuelve 401 Unauthorized si el token es inválido o el usuario no tiene permiso
         } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();  // Si no se encuentra, devuelve 404
+            return ResponseEntity.status(404).build();  // Devuelve 404 si no se encuentra al usuario
         }
     }
+
+
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         try {
-            User registeredUser = userService.registerUser(user);
-            return ResponseEntity.status(201).body(registeredUser);  // 201 Created si el usuario se registra
+            User newUser = userService.registerUser(user);
+            return ResponseEntity.ok(newUser);  // Devuelve 200 OK si el registro es exitoso
         } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.status(409).build();  // 409 Conflict si el usuario ya existe
+            return ResponseEntity.status(409).build();  // Devuelve 409 Conflict si el usuario ya existe
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestParam String email, @RequestParam String password) {
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logoutUser(@RequestHeader("Authorization") String token) {
         try {
-            User loggedInUser = userService.loginUser(email, password).get();
-            return ResponseEntity.ok(loggedInUser);  // Devuelve 200 OK si el login es exitoso
+            userService.logoutUser(token);
+            return ResponseEntity.noContent().build();  // Devuelve 204 No Content si el logout es exitoso
         } catch (InvalidCredentialsException e) {
-            return ResponseEntity.status(401).build();  // Devuelve 401 Unauthorized si las credenciales son incorrectas
+            return ResponseEntity.status(401).build();  // Devuelve 401 si el token es inválido
         }
     }
-    @GetMapping("/{id}/profile")
-    public ResponseEntity<User> getUserProfile(@PathVariable Integer id) {
-        Optional<User> user = userService.getProfile(id);
-        // Si el usuario está presente, devolvemos 200 OK con el objeto User
-        return user.map(ResponseEntity::ok)
-                // Si el usuario no está presente, devolvemos 404 Not Found
-                .orElse(ResponseEntity.notFound().build());
+
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
+        try {
+            String token = userService.loginUser(email, password);
+            return ResponseEntity.ok(token);  // Devuelve el token si el login es exitoso
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(401).build();  // Devuelve 401 si las credenciales son incorrectas
+        }
     }
+
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<User> getUserProfile(
+            @PathVariable Integer id,
+            @RequestHeader("Authorization") String token) {
+        try {
+            User userProfile = userService.getProfile(id, token)
+                    .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+            return ResponseEntity.ok(userProfile);
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(401).build();  // Devuelve 401 si el token es inválido
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(404).build();  // Devuelve 404 si no se encuentra el usuario
+        }
+    }
+
 
 }

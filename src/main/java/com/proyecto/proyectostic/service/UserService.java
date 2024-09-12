@@ -16,12 +16,14 @@ import java.util.Scanner;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-
-
+    private final UserRepository userRepository;  //El UserRepositoryes una interfaz en Spring Boot que permite interactuar directamente con la base de datos para realizar operaciones CRUD
+    private final TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(TokenService tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
         this.userRepository = userRepository;
+        this.passwordEncoder=passwordEncoder;
     }
 
     public List<User> getAllUsers() {
@@ -50,35 +52,62 @@ public class UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
-
-    public Optional<User> loginUser(String email, String password) {
+    public String loginUser(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
-            return user;  // Login exitoso
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+            // Genera un token si las credenciales son válidas
+            String token = tokenService.generateToken(user.get());
+            return token;  // Devuelve el token generado
         } else {
             throw new InvalidCredentialsException("Invalid email or password");  // Lanzar excepción si las credenciales son incorrectas
         }
     }
 
-    public User updateUser(Integer id, User updatedUser) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setName(updatedUser.getName());
-                    user.setLastName(updatedUser.getLastName());
-                    user.setEmail(updatedUser.getEmail());
-                    user.setTelephone(updatedUser.getTelephone());
-                    // Actualiza cualquier otro campo necesario
-                    return userRepository.save(user);
-                }).orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+    public void logoutUser(String token) {
+        tokenService.invalidateToken(token);  // Invalida el token proporcionado
     }
 
-    public Optional<User> getProfile(Integer id) {
+
+    public User updateUser(Integer id, User updatedUser, String token) {
+        // Verifica si el token es válido y extrae el usuario del token
+        String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        Optional<User> userFromToken = tokenService.getUserFromToken(actualToken);
+
+        // Verifica si el token es válido y si el usuario tiene permiso
+        User user = userFromToken.orElseThrow(() -> new InvalidCredentialsException("Invalid token"));
+        if (!user.getUserId().equals(id)) {
+            throw new InvalidCredentialsException("Unauthorized action");
+        }
+
+        // Actualiza el usuario si pasa todas las validaciones
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    existingUser.setName(updatedUser.getName());
+                    existingUser.setLastName(updatedUser.getLastName());
+                    existingUser.setEmail(updatedUser.getEmail());
+                    existingUser.setTelephone(updatedUser.getTelephone());
+                    // Actualiza otros campos necesarios
+                    return userRepository.save(existingUser);
+                })
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+    }
+
+
+    public Optional<User> getProfile(Integer id, String token) {
+        // Verifica si el token es válido y extrae el usuario del token
+        String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        Optional<User> userFromToken = tokenService.getUserFromToken(actualToken);
+
+        // Verifica si el token es válido y si el usuario tiene permiso
+        User user = userFromToken.orElseThrow(() -> new InvalidCredentialsException("Invalid token"));
+        if (!user.getUserId().equals(id)) {
+            throw new InvalidCredentialsException("Unauthorized action");
+        }
+
+        // Devuelve el perfil del usuario
         return userRepository.findById(id);
     }
-
-
-
-
 }
 
