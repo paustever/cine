@@ -51,4 +51,7 @@ public class Reservation {
     public void setReservationDetails(List<ReservationDetail> reservationDetails) {
         this.reservationDetails = reservationDetails;
     }
+
+    public void setShowtime(ShowTime showtime) {
+    }
 }

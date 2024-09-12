@@ -26,8 +26,6 @@ public class ShowTime {
     private List<Reservation> reservations;
 
     public ShowTime() {}
-
-    // Getters y setters
     public Integer getShowtimeId() {
         return showtimeId;
     }

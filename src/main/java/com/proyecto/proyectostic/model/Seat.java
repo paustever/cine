@@ -1,9 +1,10 @@
 package com.proyecto.proyectostic.model;
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 
 @Entity
 public class Seat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seatId;
@@ -11,10 +12,12 @@ public class Seat {
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
+
     private Integer rowNumber;
     private Integer seatNumber;
     private Boolean available;
 
+    // Getters y setters
     public Integer getSeatId() {
         return seatId;
     }
@@ -47,7 +50,7 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public Boolean isAvailable() {
+    public Boolean getAvailable() {
         return available;
     }
 

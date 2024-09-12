@@ -76,9 +76,5 @@ public class UserService {
     public Optional<User> getProfile(Integer id) {
         return userRepository.findById(id);
     }
-
-
-
-
 }
 
