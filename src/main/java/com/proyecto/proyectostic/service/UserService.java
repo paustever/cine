@@ -7,6 +7,7 @@ import com.proyecto.proyectostic.excepcion.UserNotFoundException;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class UserService {
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(TokenService tokenService, UserRepository userRepository) {
+    public UserService(TokenService tokenService, UserRepository userRepository,PasswordEncoder passwordEncoder) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.passwordEncoder=passwordEncoder;
