@@ -1,11 +1,12 @@
 package com.proyecto.proyectostic.model;
+
 import jakarta.persistence.*;
-
 import java.util.Date;
-
+import java.util.List;
 
 @Entity
 public class Reservation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reservationId;
@@ -15,6 +16,9 @@ public class Reservation {
     private User user;
 
     private Date date;
+
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservationDetail> reservationDetails;
 
     public Integer getReservationId() {
         return reservationId;
@@ -38,5 +42,13 @@ public class Reservation {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<ReservationDetail> getReservationDetails() {
+        return reservationDetails;
+    }
+
+    public void setReservationDetails(List<ReservationDetail> reservationDetails) {
+        this.reservationDetails = reservationDetails;
     }
 }
