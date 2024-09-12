@@ -3,7 +3,6 @@ package com.proyecto.proyectostic.controller;
 import com.proyecto.proyectostic.model.Reservation;
 import com.proyecto.proyectostic.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,12 +11,8 @@ import java.util.List;
 @RequestMapping("/reservations")
 public class ReservationController {
 
-    private final ReservationService reservationService;
-
     @Autowired
-    public ReservationController(ReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
+    private ReservationService reservationService;
 
     @GetMapping
     public List<Reservation> getAllReservations() {
@@ -25,10 +20,8 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Reservation> getReservationById(@PathVariable Integer id) {
-        return reservationService.getReservationById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Reservation getReservationById(@PathVariable Integer id) {
+        return reservationService.getReservationById(id);
     }
 
     @PostMapping
@@ -37,8 +30,8 @@ public class ReservationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReservation(@PathVariable Integer id) {
+    public void deleteReservation(@PathVariable Integer id) {
         reservationService.deleteReservation(id);
-        return ResponseEntity.noContent().build();
     }
 }
+

@@ -1,17 +1,18 @@
 package com.proyecto.proyectostic.model;
 
-
 import jakarta.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class ReservationDetail {
+@IdClass(ReservationDetailId.class) // Aquí se utiliza la clave compuesta
+public class ReservationDetail implements Serializable {
 
     @Id
-    @Column(name="reservation_id")
+    @Column(name = "reservation_id")
     private Integer reservationId;
 
     @Id
-    @Column(name="seat_id")
+    @Column(name = "seat_id")
     private Integer seatId;
 
     @ManyToOne
@@ -54,3 +55,4 @@ public class ReservationDetail {
         this.seat = seat;
     }
 }
+
