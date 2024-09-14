@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -38,7 +39,7 @@ public class ReservationService {
     public void deleteReservation(Integer id) {
         reservationRepository.deleteById(id);
     }
-    @Transactional
+
     public void reserveSeats(User user, List<Integer> seatIds, ShowTime showtime) throws Exception {
 
         Reservation reservation = new Reservation();
@@ -47,10 +48,18 @@ public class ReservationService {
         reservation.setDate(showtime.getShowtimeDate());
 
         for (Integer seatId : seatIds) {
-            Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new Exception("Seat not found"));
+            Optional<Seat> optionalSeat = seatRepository.findById(seatId);
+
+            if (!optionalSeat.isPresent()) {
+                throw new Exception("Seat with ID " + seatId + " not found");
+            }
+
+            Seat seat = optionalSeat.get();
+
             if (!seat.getAvailable()) {
                 throw new Exception("Seat " + seat.getSeatNumber() + " is already taken");
             }
+
             seat.setAvailable(false);
             seatRepository.save(seat);
 
@@ -59,12 +68,18 @@ public class ReservationService {
             reservationDetail.setSeat(seat);
             reservationDetailRepository.save(reservationDetail);
         }
+
         reservationRepository.save(reservation);
     }
-    public void cancelReservation(Integer reservationId) throws Exception {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new Exception("Reservation not found"));
 
+    public void cancelReservation(Integer reservationId) throws Exception {
+        Optional reservation = reservationRepository.findById(reservationId);
+
+        if (!reservation.isPresent()){
+            throw new Exception("reservation with Id: "+ reservationId + " not found" );
+        }
+
+        Reservation reservationfound= (Reservation) reservation.get();
         List<ReservationDetail> reservationDetails = reservationDetailRepository.findByReservationId(reservationId);
 
         for (ReservationDetail detail : reservationDetails) {
@@ -72,9 +87,8 @@ public class ReservationService {
             seat.setAvailable(true);
             seatRepository.save(seat);
         }
-
         reservationDetailRepository.deleteAll(reservationDetails);
-        reservationRepository.delete(reservation);
+        reservationRepository.delete(reservationfound);
     }
 
 }
