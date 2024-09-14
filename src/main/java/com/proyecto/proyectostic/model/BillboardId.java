@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 
 public class BillboardId implements Serializable {
-
     private Integer movieId;
     private Integer cinemaId;
 

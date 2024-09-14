@@ -37,6 +37,7 @@ public class TokenService {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
+
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail()) // o user.getUserId()

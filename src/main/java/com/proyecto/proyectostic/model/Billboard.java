@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 
 @Entity
+@IdClass(BillboardId.class)
 public class Billboard {
 
     @Id
