@@ -22,7 +22,6 @@ public class TokenService {
 
     @Value("${jwt.secret}")
     private String secretKey;
-
     private Key key;
     private final UserRepository userRepository;
     private final Set<String> blacklistedTokens = new HashSet<>(); // Lista negra en memoria
@@ -33,9 +32,10 @@ public class TokenService {
 
     @PostConstruct
     public void init() {
-        // Inicializa la clave de firma JWT
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        // Genera automáticamente una clave segura para HMAC-SHA256
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
+
 
 
     public String generateToken(User user) {

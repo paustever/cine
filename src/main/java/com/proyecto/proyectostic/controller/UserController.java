@@ -67,12 +67,11 @@ public class UserController {
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         try {
             User newUser = userService.registerUser(user);
-            return ResponseEntity.ok(newUser);  // Devuelve 200 OK si el registro es exitoso
+            return ResponseEntity.ok(newUser);
         } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.status(409).build();  // Devuelve 409 Conflict si el usuario ya existe
+            return ResponseEntity.status(409).build();
         }
     }
-
     @PostMapping("/logout")
     public ResponseEntity<Void> logoutUser(@RequestHeader("Authorization") String token) {
         try {
