@@ -15,15 +15,13 @@ public class Reservation {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "showtime_id")
+    private ShowTime showtime;
     private Date date;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservationDetail> reservationDetails;
-
-    @ManyToOne
-    @JoinColumn(name = "showtime_id")
-    private ShowTime showtime;
-
 
     public Integer getReservationId() {
         return reservationId;
