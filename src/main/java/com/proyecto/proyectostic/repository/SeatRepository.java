@@ -9,10 +9,11 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
     List<Seat> findByRoomRoomId(Integer roomId);
 
-    List<Seat> findByRoomRoomIdAndIsAvailable(Integer roomId, Boolean isAvailable);
+    List<Seat> findByRoomRoomIdAndAvailable(Integer roomId, Boolean available); // Cambiado aquí
 
     Optional<Seat> findById(Integer seatId);
 }
+
 
 
 
