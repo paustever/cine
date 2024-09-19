@@ -58,7 +58,6 @@ public class UserService {
     public String loginUser(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            // Genera un token si las credenciales son válidas
             String token = tokenService.generateToken(user.get());
             return token;  // Devuelve el token generado
         } else {

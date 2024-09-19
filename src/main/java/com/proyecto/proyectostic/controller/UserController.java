@@ -70,8 +70,12 @@ public class UserController {
             return ResponseEntity.ok(newUser);
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(409).build();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception for debugging
+            return ResponseEntity.status(500).build(); // Return a generic 500 error in case something unexpected happens
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<Void> logoutUser(@RequestHeader("Authorization") String token) {
         try {

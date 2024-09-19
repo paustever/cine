@@ -19,9 +19,6 @@ import java.util.Date;
 
 @Service
 public class TokenService {
-
-    @Value("${jwt.secret}")
-    private String secretKey;
     private Key key;
     private final UserRepository userRepository;
     private final Set<String> blacklistedTokens = new HashSet<>(); // Lista negra en memoria
