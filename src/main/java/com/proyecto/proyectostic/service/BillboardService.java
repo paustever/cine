@@ -120,4 +120,19 @@ public class BillboardService {
     public void deleteBillboard(Integer id) {
         billboardRepository.deleteById(id);
     }
+    public List<Movie> getAllMoviesFromAllBillboards() {
+        List<Billboard> billboards = billboardRepository.findAll();
+        List<Movie> movies = new ArrayList<>();
+
+        for (Billboard billboard : billboards) {
+            for (ShowTime showTime : billboard.getShowTimes()) {
+                Movie movie = showTime.getMovie();
+                if (!movies.contains(movie)) {
+                    movies.add(movie);
+                }
+            }
+        }
+
+        return movies;
+    }
 }
