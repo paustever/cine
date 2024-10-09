@@ -1,4 +1,5 @@
 package com.proyecto.proyectostic.config;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,12 +19,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())  // Deshabilita CSRF para pruebas con Postman
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register", "/users/login").permitAll()  // Permitir el acceso público a estos endpoints
-                        .anyRequest().authenticated()  // Otros endpoints requieren autenticación
+                        .requestMatchers("/users/register", "/users/login").permitAll()  // Permite registrar y loguear sin autenticación
+                        .requestMatchers("/users/logout").authenticated()  // Protege el logout
+                        .anyRequest().authenticated()  // Cualquier otra solicitud requiere autenticación
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/users/logout")  // Especifica la URL del logout
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_NO_CONTENT);  // Devuelve 204 No Content si el logout es exitoso
+                        })
                 );
         return http.build();
     }
+
+
 
 }

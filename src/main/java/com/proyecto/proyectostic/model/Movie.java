@@ -28,8 +28,8 @@ public class Movie {
 
     private String coverImageUrl;
 
-    @ManyToMany(mappedBy = "movies")
-    private Set<Billboard> billboards = new HashSet<>();
+    //@ManyToMany(mappedBy = "movie")
+    //private Set<Billboard> billboards = new HashSet<>();
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ShowTime> showTimes = new HashSet<>();
@@ -127,13 +127,13 @@ public class Movie {
         this.coverImageUrl = coverImageUrl;
     }
 
-    public Set<Billboard> getBillboards() {
-        return billboards;
-    }
-
-    public void setBillboards(Set<Billboard> billboards) {
-        this.billboards = billboards;
-    }
+//    public Set<Billboard> getBillboards() {
+//        return billboards;
+//    }
+//
+//    public void setBillboards(Set<Billboard> billboards) {
+//        this.billboards = billboards;
+//    }
 
     public Set<ShowTime> getShowTimes() {
         return showTimes;

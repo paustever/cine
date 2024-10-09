@@ -47,10 +47,16 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("User already exists");
         }
+
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-        return userRepository.save(user);
+
+        // Guardar el usuario en la base de datos
+        User savedUser = userRepository.save(user);
+        // Devolver el usuario sin la contraseña
+        return savedUser;
     }
+
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
