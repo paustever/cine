@@ -1,11 +1,10 @@
+// src/main/java/com/proyecto/proyectostic/model/Movie.java
 package com.proyecto.proyectostic.model;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Movie {
@@ -20,8 +19,25 @@ public class Movie {
     private String director;
     private String review;
     private String cast;
+
+    @Temporal(TemporalType.DATE)
     private Date startDate;
+
+    @Temporal(TemporalType.DATE)
     private Date endDate;
+
+    private String coverImageUrl;
+
+    @ManyToMany(mappedBy = "movies")
+    private Set<Billboard> billboards = new HashSet<>();
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ShowTime> showTimes = new HashSet<>();
+
+    // Constructors
+    public Movie() {}
+
+    // Getters y Setters
 
     public Integer getMovieId() {
         return movieId;
@@ -102,4 +118,29 @@ public class Movie {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
+    }
+
+    public Set<Billboard> getBillboards() {
+        return billboards;
+    }
+
+    public void setBillboards(Set<Billboard> billboards) {
+        this.billboards = billboards;
+    }
+
+    public Set<ShowTime> getShowTimes() {
+        return showTimes;
+    }
+
+    public void setShowTimes(Set<ShowTime> showTimes) {
+        this.showTimes = showTimes;
+    }
 }
+

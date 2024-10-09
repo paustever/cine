@@ -45,4 +45,5 @@ public class BillboardController {
         billboardService.deleteBillboard(id);
         return ResponseEntity.noContent().build();
     }
+
 }

@@ -39,7 +39,6 @@ public class CinemaService {
     public Cinema registerCinema(Cinema cinema) {
         if (cinemaRepository.existsById(cinema.getCinemaId())) {
             throw new CinemaAlreadyExistsException("Cinema with ID " + cinema.getCinemaId() + " already exists");
-
         }
         return cinemaRepository.save(cinema);
     }

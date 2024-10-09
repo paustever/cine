@@ -44,7 +44,6 @@ public class SeatController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @PutMapping("/{id}/availability")
     public ResponseEntity<Seat> updateSeatAvailability(@PathVariable Integer id, @RequestParam Boolean available) {
         try {

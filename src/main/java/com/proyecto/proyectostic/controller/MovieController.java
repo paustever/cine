@@ -5,7 +5,10 @@ import com.proyecto.proyectostic.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -40,5 +43,15 @@ public class MovieController {
     public ResponseEntity<Void> deleteMovie(@PathVariable Integer id) {
         movieService.deleteMovie(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/upload")
+    public String uploadImage(@RequestParam("image") MultipartFile image) throws IOException {
+        String imagePath = "images/" + image.getOriginalFilename(); // Ruta donde se guardará la imagen
+        File dest = new File(imagePath);
+        image.transferTo(dest); // Guardar el archivo en el sistema
+
+        return imagePath; // Esto se puede usar luego como coverImageUrl
+
     }
 }
