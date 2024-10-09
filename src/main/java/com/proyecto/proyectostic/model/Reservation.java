@@ -14,9 +14,13 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     @ManyToOne
-    @JoinColumn(name = "showtime_id")
+    @JoinColumns({
+            @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", nullable = false),
+            @JoinColumn(name = "showtime_date", referencedColumnName = "showtime_date", nullable = false),
+            @JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = false)
+    })
+
     private ShowTime showtime;
     private Date date;
 
@@ -54,7 +58,8 @@ public class Reservation {
     public void setReservationDetails(List<ReservationDetail> reservationDetails) {
         this.reservationDetails = reservationDetails;
     }
-
     public void setShowtime(ShowTime showtime) {
+        this.showtime = showtime;
     }
+
 }

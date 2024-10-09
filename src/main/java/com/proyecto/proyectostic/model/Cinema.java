@@ -12,7 +12,6 @@ public class Cinema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cinemaId;
-
     private String neighborhood;
     private String address;
     private String telephone;

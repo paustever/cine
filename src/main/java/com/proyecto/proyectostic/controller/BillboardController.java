@@ -1,5 +1,6 @@
 package com.proyecto.proyectostic.controller;
 
+import com.proyecto.proyectostic.excepcion.BillboardNotFoundException;
 import com.proyecto.proyectostic.model.Billboard;
 import com.proyecto.proyectostic.service.BillboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/billboards")
@@ -26,10 +28,12 @@ public class BillboardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Billboard> getBillboardById(@PathVariable Integer id) {
-        return billboardService.getBillboardById(id)
-                .map(ResponseEntity::ok)
+        Optional<Billboard> optionalBillboard = billboardService.getBillboardById(id);
+        return optionalBillboard.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
 
     @PostMapping
     public Billboard createBillboard(@RequestBody Billboard billboard) {

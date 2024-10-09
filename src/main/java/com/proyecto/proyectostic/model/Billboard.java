@@ -1,32 +1,45 @@
 package com.proyecto.proyectostic.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@IdClass(BillboardId.class)
 public class Billboard {
 
     @Id
-    private Integer movieId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer billboardId;
 
-    @Id
-    private Integer cinemaId;
+    @ManyToOne
+    @JoinColumn(name = "cinema_id", nullable = false)
+    private Cinema cinema;
 
-    public Integer getMovieId() {
-        return movieId;
+    // Una cartelera puede tener múltiples horarios de películas (ShowTimes)
+    @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL)
+    private List<ShowTime> showTimes;
+
+    // Getters y Setters
+    public Integer getBillboardId() {
+        return billboardId;
     }
 
-    public Integer getCinemaId() {
-        return cinemaId;
+    public void setBillboardId(Integer billboardId) {
+        this.billboardId = billboardId;
     }
 
-    public void setCinemaId(Integer cinemaId) {
-        this.cinemaId = cinemaId;
+    public Cinema getCinema() {
+        return cinema;
     }
 
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    public List<ShowTime> getShowTimes() {
+        return showTimes;
+    }
+
+    public void setShowTimes(List<ShowTime> showTimes) {
+        this.showTimes = showTimes;
     }
 }

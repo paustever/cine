@@ -3,28 +3,26 @@ package com.proyecto.proyectostic.model;
 import jakarta.persistence.*;
 
 @Entity
+@IdClass(SeatId.class)
 public class Seat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer seatId;
-
+    private Integer roomId;
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @JoinColumn(name = "roomId", nullable = false)
+    private Room room; // Clave compuesta - sala
 
-    private Integer rowNumber;
-    private Integer seatNumber;
+    @Id
+    private Integer rowNumber; // Clave compuesta - número de fila
+
+    @Id
+    private Integer seatNumber; // Clave compuesta - número de asiento
+
     private Boolean available;
 
-    // Getters y setters
-    public Integer getSeatId() {
-        return seatId;
-    }
+    public Seat() {}
 
-    public void setSeatId(Integer seatId) {
-        this.seatId = seatId;
-    }
+    // Getters y Setters
 
     public Room getRoom() {
         return room;
@@ -57,4 +55,5 @@ public class Seat {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
+
 }

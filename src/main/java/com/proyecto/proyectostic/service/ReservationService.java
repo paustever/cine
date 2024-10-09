@@ -1,5 +1,7 @@
 package com.proyecto.proyectostic.service;
 
+import com.proyecto.proyectostic.excepcion.SeatNotAvailableException;
+import com.proyecto.proyectostic.excepcion.SeatNotFoundException;
 import com.proyecto.proyectostic.model.*;
 import com.proyecto.proyectostic.repository.ReservationDetailRepository;
 import com.proyecto.proyectostic.repository.ReservationRepository;
@@ -40,24 +42,23 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public void reserveSeats(User user, List<Integer> seatIds, ShowTime showtime) throws Exception {
-
+    public void reserveSeats(User user, List<Integer> seatIds, ShowTime showtime) throws SeatNotAvailableException {
         Reservation reservation = new Reservation();
         reservation.setUser(user);
         reservation.setShowtime(showtime);
-        reservation.setDate(showtime.getShowtimeDate());
+        reservation.setDate(showtime.getShowtime_date());
 
         for (Integer seatId : seatIds) {
             Optional<Seat> optionalSeat = seatRepository.findById(seatId);
 
-            if (!optionalSeat.isPresent()) {
-                throw new Exception("Seat with ID " + seatId + " not found");
+            if (optionalSeat.isEmpty()) {
+                throw new SeatNotFoundException("Seat with ID " + seatId + " not found");
             }
 
             Seat seat = optionalSeat.get();
 
             if (!seat.getAvailable()) {
-                throw new Exception("Seat " + seat.getSeatNumber() + " is already taken");
+                throw new SeatNotAvailableException("Seat " + seat.getSeatNumber() + " is already taken");
             }
 
             seat.setAvailable(false);
@@ -71,6 +72,7 @@ public class ReservationService {
 
         reservationRepository.save(reservation);
     }
+
 
     public void cancelReservation(Integer reservationId) throws Exception {
         Optional reservation = reservationRepository.findById(reservationId);

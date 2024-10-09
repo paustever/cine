@@ -1,10 +1,12 @@
 package com.proyecto.proyectostic.model;
-import jakarta.persistence.*;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roomId;
@@ -12,6 +14,9 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private Map<SeatId, Seat> seats = new HashMap<>();
 
     public Integer getRoomId() {
         return roomId;
@@ -27,5 +32,13 @@ public class Room {
 
     public void setCinema(Cinema cinema) {
         this.cinema = cinema;
+    }
+
+    public Map<SeatId, Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Map<SeatId, Seat> seats) {
+        this.seats = seats;
     }
 }

@@ -16,12 +16,16 @@ public class ReservationDetail implements Serializable {
     private Integer seatId;
 
     @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "reservation_id", nullable = false)
     private Reservation reservation;
-
     @ManyToOne
-    @JoinColumn(name = "seat_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumns({ // Usar @JoinColumns si Seat tiene una clave compuesta
+            @JoinColumn(name = "roomId", referencedColumnName = "roomId", nullable = false),
+            @JoinColumn(name = "rowNumber", referencedColumnName = "rowNumber", nullable = false),
+            @JoinColumn(name = "seatNumber", referencedColumnName = "seatNumber", nullable = false)
+    })
     private Seat seat;
+
 
     public Integer getReservationId() {
         return reservationId;

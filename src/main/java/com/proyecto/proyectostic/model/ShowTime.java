@@ -1,38 +1,38 @@
 package com.proyecto.proyectostic.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "showtime")
+@IdClass(ShowTimeId.class)
 public class ShowTime {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer showtimeId;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
+    private Movie movie;  // Clave compuesta - película
 
+    @Id
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date showtime_date;  // Clave compuesta - fecha y hora de la función
+
+    @Id
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date showtimeDate;
+    private Room room;  // Clave compuesta - sala
 
     @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
+    @ManyToOne
+    @JoinColumn(name = "billboard_id", nullable = false)  // Nueva relación con Billboard
+    private Billboard billboard;  // Clave compuesta - cartelera
 
+    // Constructor vacío
     public ShowTime() {}
-    public Integer getShowtimeId() {
-        return showtimeId;
-    }
 
-    public void setShowtimeId(Integer showtimeId) {
-        this.showtimeId = showtimeId;
-    }
+    // Getters y Setters
 
     public Movie getMovie() {
         return movie;
@@ -40,6 +40,14 @@ public class ShowTime {
 
     public void setMovie(Movie movie) {
         this.movie = movie;
+    }
+
+    public Date getShowtime_date() {
+        return showtime_date;
+    }
+
+    public void setShowtime_date(Date showtime_date) {
+        this.showtime_date = showtime_date;
     }
 
     public Room getRoom() {
@@ -50,14 +58,6 @@ public class ShowTime {
         this.room = room;
     }
 
-    public Date getShowtimeDate() {
-        return showtimeDate;
-    }
-
-    public void setShowtimeDate(Date showtimeDate) {
-        this.showtimeDate = showtimeDate;
-    }
-
     public List<Reservation> getReservations() {
         return reservations;
     }
@@ -65,6 +65,12 @@ public class ShowTime {
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
+
+    public Billboard getBillboard() {
+        return billboard;
+    }
+
+    public void setBillboard(Billboard billboard) {
+        this.billboard = billboard;
+    }
 }
-
-
