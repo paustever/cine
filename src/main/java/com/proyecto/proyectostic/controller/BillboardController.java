@@ -2,6 +2,7 @@ package com.proyecto.proyectostic.controller;
 
 import com.proyecto.proyectostic.excepcion.BillboardNotFoundException;
 import com.proyecto.proyectostic.model.Billboard;
+import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.service.BillboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,10 @@ public class BillboardController {
         return optionalBillboard.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    @GetMapping("/movies")
+    public List<Movie> getAllMovies() {
+        return billboardService.getAllMoviesFromAllBillboards();
+    }
 
 
     @PostMapping
