@@ -63,7 +63,6 @@ public class ReservationService {
 
             seat.setAvailable(false);
             seatRepository.save(seat);
-
             ReservationDetail reservationDetail = new ReservationDetail();
             reservationDetail.setReservation(reservation);
             reservationDetail.setSeat(seat);
@@ -92,6 +91,7 @@ public class ReservationService {
         reservationDetailRepository.deleteAll(reservationDetails);
         reservationRepository.delete(reservationfound);
     }
+
 
 }
 

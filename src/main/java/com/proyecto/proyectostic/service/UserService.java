@@ -4,6 +4,7 @@ import com.proyecto.proyectostic.excepcion.InvalidCredentialsException;
 import com.proyecto.proyectostic.excepcion.InvalidPasswordException;
 import com.proyecto.proyectostic.excepcion.UserAlreadyExistsException;
 import com.proyecto.proyectostic.excepcion.UserNotFoundException;
+import com.proyecto.proyectostic.model.Reservation;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +118,15 @@ public class UserService {
         // Devuelve el perfil del usuario
         return userRepository.findById(id);
     }
+
+    public List<Reservation> showAllReservationForUser(Integer userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get().getReservations();
+        } else {
+            throw new UserNotFoundException("User not found with ID: " + userId);
+        }
+    }
+
 }
 

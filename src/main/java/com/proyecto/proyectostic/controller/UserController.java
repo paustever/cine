@@ -4,6 +4,7 @@ import com.proyecto.proyectostic.excepcion.InvalidCredentialsException;
 import com.proyecto.proyectostic.excepcion.InvalidPasswordException;
 import com.proyecto.proyectostic.excepcion.UserAlreadyExistsException;
 import com.proyecto.proyectostic.excepcion.UserNotFoundException;
+import com.proyecto.proyectostic.model.Reservation;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,13 @@ public class UserController {
             return ResponseEntity.status(404).build();  // Devuelve 404 si no se encuentra el usuario
         }
     }
+
+    @GetMapping("/{id}/reservations")
+    public ResponseEntity<List<Reservation>> getAllReservationsForUser(@PathVariable Integer id) {
+        List<Reservation> reservations = userService.showAllReservationForUser(id);
+        return ResponseEntity.ok(reservations);
+    }
+
 
 
 }

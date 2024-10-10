@@ -42,4 +42,5 @@ public class CinemaService {
         }
         return cinemaRepository.save(cinema);
     }
+
 }

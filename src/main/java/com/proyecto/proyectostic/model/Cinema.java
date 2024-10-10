@@ -17,6 +17,11 @@ public class Cinema {
     private String telephone;
     private Integer noRoom;
 
+
+    public Cinema() {
+
+    }
+
     public Integer getCinemaId() {
         return cinemaId;
     }
