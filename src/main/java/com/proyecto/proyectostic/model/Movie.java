@@ -18,7 +18,7 @@ public class Movie {
     private Integer duration;
     private String director;
     private String review;
-    private String cast;
+    private String movieCast;
 
     @Temporal(TemporalType.DATE)
     private Date startDate;
@@ -95,12 +95,12 @@ public class Movie {
         this.review = review;
     }
 
-    public String getCast() {
-        return cast;
+    public String getMovieCast() {
+        return movieCast;
     }
 
-    public void setCast(String cast) {
-        this.cast = cast;
+    public void setMovieCast(String movieCast) {
+        this.movieCast = movieCast;
     }
 
     public Date getStartDate() {
