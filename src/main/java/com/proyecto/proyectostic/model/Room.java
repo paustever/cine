@@ -18,6 +18,9 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Map<SeatId, Seat> seats = new HashMap<>();
 
+    public Room() {
+    }
+
     public Integer getRoomId() {
         return roomId;
     }
