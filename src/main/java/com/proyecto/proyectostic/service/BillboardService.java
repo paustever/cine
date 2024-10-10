@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -135,4 +136,11 @@ public class BillboardService {
 
         return movies;
     }
+
+    // Metodo para obtener las carteleras con horarios disponibles a partir de la fecha actual
+    public List<Billboard> getAvailableBillboards() {
+        Date currentDate = new Date(); // Fecha actual
+        return billboardRepository.findAvailableBillboards(currentDate);
+    }
+
 }

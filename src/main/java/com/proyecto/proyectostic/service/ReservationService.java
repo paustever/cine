@@ -83,6 +83,10 @@ public class ReservationService {
         }
         reservationDetailRepository.deleteAll(reservationDetails);
         reservationRepository.delete(reservationfound);
+
+        // borrar en lista del usuario la reserva
+        User user = reservationfound.getUser();
+        user.getReservations().remove(reservationfound);
     }
 }
 

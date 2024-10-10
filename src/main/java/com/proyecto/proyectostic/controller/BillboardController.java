@@ -68,4 +68,11 @@ public class BillboardController {
         return ResponseEntity.noContent().build();
     }
 
+    // Endpoint para obtener las carteleras disponibles con horarios a partir de hoy
+    @GetMapping("/available")
+    public ResponseEntity<List<Billboard>> getAvailableBillboards() {
+        List<Billboard> availableBillboards = billboardService.getAvailableBillboards();
+        return ResponseEntity.ok(availableBillboards);
+    }
+
 }
