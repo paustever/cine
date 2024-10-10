@@ -19,15 +19,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
-    public List<Reservation> getReservations() {
-        return reservations;
+    public User() {
     }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
+    public User(Integer userId, String name, String email, String password) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
-
-
 
     public Integer getUserId() {
         return userId;
@@ -75,5 +74,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

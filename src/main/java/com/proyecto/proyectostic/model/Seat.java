@@ -48,6 +48,14 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
     public Boolean getAvailable() {
         return available;
     }

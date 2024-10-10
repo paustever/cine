@@ -118,7 +118,4 @@ public class UserController {
         List<Reservation> reservations = userService.showAllReservationForUser(id);
         return ResponseEntity.ok(reservations);
     }
-
-
-
 }

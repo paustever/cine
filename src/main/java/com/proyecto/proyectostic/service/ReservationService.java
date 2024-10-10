@@ -24,6 +24,8 @@ public class ReservationService {
     private SeatRepository seatRepository;
     @Autowired
     private ReservationDetailRepository reservationDetailRepository;
+    @Autowired
+    private SeatService seatService;  // Inyectar SeatService
 
 
     public List<Reservation> getAllReservations() {
@@ -42,35 +44,26 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    public void reserveSeats(User user, List<Integer> seatIds, ShowTime showtime) throws SeatNotAvailableException {
+
+    public void reserveSeats(User user, List<SeatId> seatIds, ShowTime showtime) throws SeatNotAvailableException {
         Reservation reservation = new Reservation();
         reservation.setUser(user);
         reservation.setShowtime(showtime);
         reservation.setDate(showtime.getShowtime_date());
 
-        for (Integer seatId : seatIds) {
-            Optional<Seat> optionalSeat = seatRepository.findById(seatId);
+        for (SeatId seatId : seatIds) {
+            // Delegar la lógica de reserva del asiento a SeatService
+            Seat seat = seatService.reserveSeat(seatId);
 
-            if (optionalSeat.isEmpty()) {
-                throw new SeatNotFoundException("Seat with ID " + seatId + " not found");
-            }
-
-            Seat seat = optionalSeat.get();
-
-            if (!seat.getAvailable()) {
-                throw new SeatNotAvailableException("Seat " + seat.getSeatNumber() + " is already taken");
-            }
-
-            seat.setAvailable(false);
-            seatRepository.save(seat);
+            // Crear el detalle de la reserva
             ReservationDetail reservationDetail = new ReservationDetail();
             reservationDetail.setReservation(reservation);
             reservationDetail.setSeat(seat);
             reservationDetailRepository.save(reservationDetail);
         }
-
         reservationRepository.save(reservation);
     }
+
 
 
     public void cancelReservation(Integer reservationId) throws Exception {
@@ -91,8 +84,6 @@ public class ReservationService {
         reservationDetailRepository.deleteAll(reservationDetails);
         reservationRepository.delete(reservationfound);
     }
-
-
 }
 
 
