@@ -7,6 +7,8 @@ import com.proyecto.proyectostic.excepcion.UserNotFoundException;
 import com.proyecto.proyectostic.model.Reservation;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -127,6 +129,8 @@ public class UserService {
             throw new UserNotFoundException("User not found with ID: " + userId);
         }
     }
+
+
 
 }
 

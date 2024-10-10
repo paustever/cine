@@ -21,18 +21,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Deshabilita CSRF para pruebas con Postman
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register", "/users/login").permitAll()  // Permitir el registro y login sin autenticación
-                        .requestMatchers("/billboards/**").permitAll()  // Permitir acceso a los endpoints de 'billboards'
-                        .anyRequest().authenticated()  // Requiere autenticación para las demás rutas
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/users/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(HttpServletResponse.SC_NO_CONTENT);  // 204 No Content en el logout
-                        })
-                );
+                .csrf(csrf -> csrf.disable()) ; // Deshabilita CSRF para pruebas con Postman
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/users/register", "/users/login").permitAll()  // Permitir el registro y login sin autenticación
+//                        .requestMatchers("/billboards/**").permitAll()  // Permitir acceso a los endpoints de 'billboards'
+//                        .anyRequest().authenticated()  // Requiere autenticación para las demás rutas
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/users/logout")
+//                        .logoutSuccessHandler((request, response, authentication) -> {
+//                            response.setStatus(HttpServletResponse.SC_NO_CONTENT);  // 204 No Content en el logout
+//                        })
+//                );
         return http.build();
     }
 }

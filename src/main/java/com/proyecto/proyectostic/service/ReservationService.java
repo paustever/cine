@@ -68,28 +68,39 @@ public class ReservationService {
             reservationDetail.setSeat(seat);
             reservationDetailRepository.save(reservationDetail);
         }
+        user.getReservations().add(reservation);
 
         reservationRepository.save(reservation);
     }
 
 
     public void cancelReservation(Integer reservationId) throws Exception {
-        Optional reservation = reservationRepository.findById(reservationId);
+        // Buscar la reserva por ID
+        Optional<Reservation> reservationOpt = reservationRepository.findById(reservationId);
 
-        if (!reservation.isPresent()){
-            throw new Exception("reservation with Id: "+ reservationId + " not found" );
+        // Verificar si la reserva existe
+        if (!reservationOpt.isPresent()) {
+            throw new Exception("Reservation with ID: " + reservationId + " not found");
         }
 
-        Reservation reservationfound= (Reservation) reservation.get();
+        Reservation reservationFound = reservationOpt.get();
         List<ReservationDetail> reservationDetails = reservationDetailRepository.findByReservationId(reservationId);
 
+        // Devolver los asientos a disponibilidad
         for (ReservationDetail detail : reservationDetails) {
             Seat seat = detail.getSeat();
             seat.setAvailable(true);
             seatRepository.save(seat);
         }
+
+        // Eliminar todos los detalles de la reserva
         reservationDetailRepository.deleteAll(reservationDetails);
-        reservationRepository.delete(reservationfound);
+
+        // Eliminar la reserva de la base de datos
+        reservationRepository.delete(reservationFound);
+
+        // Eliminar la reserva de la lista del usuario
+
     }
 
 
