@@ -16,6 +16,10 @@ public class User {
     private String email;
     private String telephone;
     private String password;
+
+    public User() {
+    }
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 

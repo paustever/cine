@@ -61,6 +61,8 @@ public class ReservationService {
             reservationDetail.setSeat(seat);
             reservationDetailRepository.save(reservationDetail);
         }
+        user.getReservations().add(reservation);
+
         reservationRepository.save(reservation);
     }
 
@@ -84,10 +86,10 @@ public class ReservationService {
         reservationDetailRepository.deleteAll(reservationDetails);
         reservationRepository.delete(reservationfound);
 
-        // borrar en lista del usuario la reserva
-        User user = reservationfound.getUser();
-        user.getReservations().remove(reservationfound);
+        // Eliminar la reserva de la base de datos(reservationFound);
     }
+
+
 }
 
 
