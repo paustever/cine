@@ -23,8 +23,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
-    public User() {
-    }
     public User(Integer userId, String name, String email, String password) {
         this.userId = userId;
         this.name = name;

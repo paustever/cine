@@ -3,10 +3,11 @@ package com.proyecto.proyectostic;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.proyecto.proyectostic.model.Billboard;
-import com.proyecto.proyectostic.model.Movie;
-import com.proyecto.proyectostic.model.ShowTime;
+import com.proyecto.proyectostic.model.*;
 import com.proyecto.proyectostic.repository.BillboardRepository;
+import com.proyecto.proyectostic.repository.MovieRepository;
+import com.proyecto.proyectostic.repository.RoomRepository;
+import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import com.proyecto.proyectostic.service.BillboardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,17 +15,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 class BillboardServiceTest {
 
     @Mock
-    private BillboardRepository BillboardRepository;
+    private BillboardRepository billboardRepository;
+
+    @Mock
+    private MovieRepository movieRepository;
+
+    @Mock
+    private RoomRepository roomRepository;
+
+    @Mock
+    private ShowtimeRepository showTimeRepository;
 
     @InjectMocks
-    private BillboardService BillboardService;
+    private BillboardService billboardService;
 
     @BeforeEach
     void setUp() {
@@ -38,36 +46,71 @@ class BillboardServiceTest {
         Billboard billboard = new Billboard();
         billboard.setBillboardId(1);
 
-        // Crear y añadir horarios de películas de prueba
-        Movie movie1 = new Movie();
-        movie1.setMovieId(1);
-        movie1.setName("Movie 1"); // Ajusta los atributos necesarios
+        // Crear película de prueba
+        Movie movie = new Movie();
+        movie.setMovieId(1);
+        movie.setName("Movie 1");
 
-        Movie movie2 = new Movie();
-        movie2.setMovieId(2);
-        movie2.setName("Movie 2"); // Ajusta los atributos necesarios
-
-        ShowTime showTime1 = new ShowTime();
-        showTime1.setMovie(movie1); // Asignar la primera película a el ShowTime
-
-        ShowTime showTime2 = new ShowTime();
-        showTime2.setMovie(movie2); // Asignar la segunda película a el ShowTime
-
-        billboard.setShowTimes(Arrays.asList(showTime1, showTime2));
+        // Crear showtime de prueba y agregar a la cartelera
+        ShowTime showTime = new ShowTime();
+        showTime.setMovie(movie);
+        billboard.setShowTimes(Arrays.asList(showTime));  // Agregar showTime a la lista de showTimes
 
         // Mockear el comportamiento del repositorio
-        when(BillboardRepository.findById(1)).thenReturn(Optional.of(billboard));
+        when(billboardRepository.findById(1)).thenReturn(Optional.of(billboard));
 
-        // Llamar al mtodo del servicio
-        List<Movie> result = BillboardService.getMoviesFromBillboard(1);
+        // Llamar al metodo del servicio
+        List<Movie> result = billboardService.getMoviesFromBillboard(1);
 
         // Verificar el resultado
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());  // Verificar que la lista contenga 1 película
+        assertEquals(movie.getName(), result.get(0).getName());  // Verificar que la película sea la correcta
 
     }
 
     @Test
     void testAddMovieToBillboard() {
+
+        // Crear cartelera de prueba
+        Billboard billboard = new Billboard();
+        billboard.setBillboardId(1);
+
+        // Crear película de prueba
+        Movie movie = new Movie();
+        movie.setMovieId(1);
+        movie.setName("Movie 1");
+
+        // Crear habitación de prueba
+        Room room = new Room();
+        room.setRoomId(1);
+        room.setCinema(new Cinema()); // Establecer un cine (puedes ajustarlo según tus necesidades)
+
+        // Crear fecha de inicio y fin para la película
+        Date startDate = new Date(); // Asignar la fecha actual como ejemplo
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        cal.add(Calendar.DATE, 1); // Hacer que endDate sea un día después de startDate
+        Date endDate = cal.getTime();
+
+        movie.setStartDate(startDate);
+        movie.setEndDate(endDate);
+
+        // Mockear el comportamiento de los repositorios
+        when(billboardRepository.findById(1)).thenReturn(Optional.of(billboard));
+        when(movieRepository.findById(1)).thenReturn(Optional.of(movie));
+        when(roomRepository.findById(1)).thenReturn(Optional.of(room));
+
+        // Llamar al método del servicio
+        ShowTime result = billboardService.addMovieToBillboard(1, 1, 1, startDate);
+
+        // Verificar el resultado
+        assertNotNull(result);
+        assertEquals(movie, result.getMovie());
+        assertEquals(billboard, result.getBillboard());
+        assertEquals(room, result.getRoom());
+
+        // Verificar que el showTime haya sido guardado en el repositorio
+        verify(showTimeRepository).save(result);  // Verifica que el repositorio fue llamado con el showTime
     }
 
     @Test
