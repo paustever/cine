@@ -8,6 +8,7 @@ import com.proyecto.proyectostic.model.Reservation;
 import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,7 +65,8 @@ public class UserController {
 
 
 
-    @PostMapping("/register")
+
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         try {
             User newUser = userService.registerUser(user);
@@ -115,7 +117,11 @@ public class UserController {
 
     @GetMapping("/{id}/reservations")
     public ResponseEntity<List<Reservation>> getAllReservationsForUser(@PathVariable Integer id) {
-        List<Reservation> reservations = userService.showAllReservationForUser(id);
-        return ResponseEntity.ok(reservations);
+        try {
+            List<Reservation> reservations = userService.showAllReservationForUser(id);
+            return ResponseEntity.ok(reservations);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(404).body(null);  // 404 si no se encuentra al usuario
+        }
     }
 }

@@ -2,11 +2,13 @@ package com.proyecto.proyectostic.controller;
 
 import com.proyecto.proyectostic.model.Billboard;
 import com.proyecto.proyectostic.model.Movie;
+import com.proyecto.proyectostic.model.ShowTime;
 import com.proyecto.proyectostic.service.BillboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +43,20 @@ public class BillboardController {
         return billboardService.getAllMoviesFromAllBillboards();
     }
 
-    // Agregar una película a la cartelera de un cine
-    @PostMapping("/{cinemaId}/add-movie/{movieId}")
-    public ResponseEntity<Billboard> addMovieToBillboard(@PathVariable Integer cinemaId, @PathVariable Integer movieId) {
-        Billboard updatedBillboard = billboardService.addMovieToBillboard(cinemaId, movieId);
-        return ResponseEntity.ok(updatedBillboard);
+    @PostMapping("/{billboardId}/add-movie/{movieId}/{roomId}")
+    public ResponseEntity<ShowTime> addMovieToBillboard(
+            @PathVariable Integer billboardId,
+            @PathVariable Integer movieId,
+            @PathVariable Integer roomId,
+            @RequestParam Date showtimeDate) {
+
+        ShowTime showTime = billboardService.addMovieToBillboard(billboardId, movieId, roomId, showtimeDate);
+        return ResponseEntity.ok(showTime);
+    }
+    @GetMapping("/{billboardId}/movies")
+    public ResponseEntity<List<Movie>> getMoviesFromBillboard(@PathVariable Integer billboardId) {
+        List<Movie> movies = billboardService.getMoviesFromBillboard(billboardId);
+        return ResponseEntity.ok(movies);
     }
 
     // Eliminar una película de la cartelera de un cine
@@ -66,6 +77,13 @@ public class BillboardController {
     public ResponseEntity<Void> deleteBillboard(@PathVariable Integer id) {
         billboardService.deleteBillboard(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint para obtener las carteleras disponibles con horarios a partir de hoy
+    @GetMapping("/available")
+    public ResponseEntity<List<Billboard>> getAvailableBillboards() {
+        List<Billboard> availableBillboards = billboardService.getAvailableBillboards();
+        return ResponseEntity.ok(availableBillboards);
     }
 
 }
