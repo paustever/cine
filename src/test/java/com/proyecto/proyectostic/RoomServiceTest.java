@@ -98,7 +98,5 @@ class RoomServiceTest {
         verify(roomRepository, times(1)).deleteById(1);
     }
 
-
-
 }
 
