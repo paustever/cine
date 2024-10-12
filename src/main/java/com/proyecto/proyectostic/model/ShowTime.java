@@ -1,6 +1,8 @@
 package com.proyecto.proyectostic.model;
 
+import com.proyecto.proyectostic.model.*;
 import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -12,28 +14,26 @@ public class ShowTime {
     @Id
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;  // Clave compuesta - película
+    private Movie movie;
 
     @Id
     @Temporal(TemporalType.TIMESTAMP)
-    private Date showtime_date;  // Clave compuesta - fecha y hora de la función
+    @Column(name = "showtime_date")  // Mantén el nombre de la columna como 'showtime_date' en la BD
+    private Date showtimeDate;  // Cambia el nombre de la propiedad a camelCase en Java
 
     @Id
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
-    private Room room;  // Clave compuesta - sala
+    private Room room;
 
     @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
-    @ManyToOne
-    @JoinColumn(name = "billboard_id", nullable = false)  // Nueva relación con Billboard
-    private Billboard billboard;  // Clave compuesta - cartelera
 
-    // Constructor vacío
-    public ShowTime() {}
+    @ManyToOne
+    @JoinColumn(name = "billboard_id", nullable = false)
+    private Billboard billboard;
 
     // Getters y Setters
-
     public Movie getMovie() {
         return movie;
     }
@@ -42,12 +42,12 @@ public class ShowTime {
         this.movie = movie;
     }
 
-    public Date getShowtime_date() {
-        return showtime_date;
+    public Date getShowtimeDate() {
+        return showtimeDate;
     }
 
-    public void setShowtime_date(Date showtime_date) {
-        this.showtime_date = showtime_date;
+    public void setShowtimeDate(Date showtimeDate) {
+        this.showtimeDate = showtimeDate;
     }
 
     public Room getRoom() {

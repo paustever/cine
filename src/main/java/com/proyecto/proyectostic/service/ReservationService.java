@@ -49,7 +49,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setUser(user);
         reservation.setShowtime(showtime);
-        reservation.setDate(showtime.getShowtime_date());
+        reservation.setDate(showtime.getShowtimeDate());
 
         for (SeatId seatId : seatIds) {
             // Delegar la lógica de reserva del asiento a SeatService

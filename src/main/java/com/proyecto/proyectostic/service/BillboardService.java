@@ -62,7 +62,7 @@ public class BillboardService {
         showTime.setBillboard(billboard);
         showTime.setMovie(movie);
         showTime.setRoom(room);
-        showTime.setShowtime_date(showtimeDate);
+        showTime.setShowtimeDate(showtimeDate);
 
         // Guardar el nuevo ShowTime
         showTimeRepository.save(showTime);
