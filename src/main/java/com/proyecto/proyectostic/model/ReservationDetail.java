@@ -26,6 +26,8 @@ public class ReservationDetail implements Serializable {
     })
     private Seat seat;
 
+    public ReservationDetail() {
+    }
 
     public Integer getReservationId() {
         return reservationId;

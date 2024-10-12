@@ -1,20 +1,16 @@
 package com.proyecto.proyectostic.service;
 
-import com.proyecto.proyectostic.excepcion.BillboardAlreadyExistsException;
 import com.proyecto.proyectostic.excepcion.BillboardNotFoundException;
 import com.proyecto.proyectostic.excepcion.CinemaNotFoundException;
 import com.proyecto.proyectostic.excepcion.MovieNotFoundException;
-import com.proyecto.proyectostic.model.Billboard;
-import com.proyecto.proyectostic.model.Cinema;
-import com.proyecto.proyectostic.model.Movie;
-import com.proyecto.proyectostic.model.ShowTime;
-import com.proyecto.proyectostic.repository.BillboardRepository;
-import com.proyecto.proyectostic.repository.CinemaRepository;
-import com.proyecto.proyectostic.repository.MovieRepository;
+import com.proyecto.proyectostic.model.*;
+import com.proyecto.proyectostic.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +25,11 @@ public class BillboardService {
 
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private ShowtimeRepository showTimeRepository;
 
     public List<Movie> getMoviesFromBillboard(Integer billboardId) {
         Billboard billboard = billboardRepository.findById(billboardId)
@@ -47,32 +48,29 @@ public class BillboardService {
         return movies;
     }
 
-    public Billboard addMovieToBillboard(Integer cinemaId, Integer movieId) {
-        Cinema cinema = cinemaRepository.findById(cinemaId)
-                .orElseThrow(() -> new CinemaNotFoundException("Cine con ID " + cinemaId + " no encontrado"));
+    public ShowTime addMovieToBillboard(Integer billboardId, Integer movieId, Integer roomId, Date showtimeDate) {
+        Billboard billboard = billboardRepository.findById(billboardId)
+                .orElseThrow(() -> new EntityNotFoundException("Billboard not found"));
 
         Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new MovieNotFoundException("Película con ID " + movieId + " no encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
 
-        Billboard billboard = billboardRepository.findByCinemaCinemaId(cinemaId);
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
 
-        if (billboard == null) {
-            billboard = new Billboard();
-            billboard.setCinema(cinema);
-        }
-
-        if (billboard.getShowTimes().stream().anyMatch(showTime -> showTime.getMovie().equals(movie))) {
-            throw new BillboardAlreadyExistsException("La película '" + movie.getName() + "' ya está en la cartelera del cine ");
-        }
-
-        // Agregar ShowTime en lugar de agregar directamente a movies
         ShowTime showTime = new ShowTime();
+        showTime.setBillboard(billboard);
         showTime.setMovie(movie);
-        showTime.setBillboard(billboard); // Asegúrate de que ShowTime tenga un campo para Billboard
-        billboard.getShowTimes().add(showTime);
+        showTime.setRoom(room);
+        showTime.setShowtime_date(showtimeDate);
 
-        return billboardRepository.save(billboard);
+        // Guardar el nuevo ShowTime
+        showTimeRepository.save(showTime);
+
+        return showTime;
     }
+
+
 
     public Billboard removeMovieFromBillboard(Integer cinemaId, Integer movieId) {
         Cinema cinema = cinemaRepository.findById(cinemaId)
@@ -135,4 +133,11 @@ public class BillboardService {
 
         return movies;
     }
+
+    // Metodo para obtener las carteleras con horarios disponibles a partir de la fecha actual
+    public List<Billboard> getAvailableBillboards() {
+        Date currentDate = new Date(); // Fecha actual
+        return billboardRepository.findAvailableBillboards(currentDate);
+    }
+
 }

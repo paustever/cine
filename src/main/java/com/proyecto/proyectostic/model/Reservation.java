@@ -24,6 +24,9 @@ public class Reservation {
     private ShowTime showtime;
     private Date date;
 
+    public Reservation() {
+    }
+
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservationDetail> reservationDetails;
 

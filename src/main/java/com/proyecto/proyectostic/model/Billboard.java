@@ -1,6 +1,7 @@
 package com.proyecto.proyectostic.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,11 +15,13 @@ public class Billboard {
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 
-    // Una cartelera puede tener múltiples horarios de películas (ShowTimes)
-    @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL)
-    private List<ShowTime> showTimes;
+    // Inicializa la lista de showTimes
+    @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShowTime> showTimes = new ArrayList<>();
 
-    // Getters y Setters
+    public Billboard() {
+    }
+
     public Integer getBillboardId() {
         return billboardId;
     }
