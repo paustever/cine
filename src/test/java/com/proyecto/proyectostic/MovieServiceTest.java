@@ -54,7 +54,7 @@ public class MovieServiceTest {
     void testGetMovieById() {
         // Preparar una película de prueba
         Movie movie = new Movie();
-        movie.setMovieId(1);
+        movie.setMovieid(1);
         movie.setName("Movie Test");
 
         // Mockear el comportamiento del repositorio

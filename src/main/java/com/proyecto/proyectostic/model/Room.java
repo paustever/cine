@@ -9,7 +9,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roomId;
+    private Integer roomid;
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
@@ -18,15 +18,18 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Map<SeatId, Seat> seats = new HashMap<>();
 
+    private int capacity;
+    private int roomNumber;
+
     public Room() {
     }
 
     public Integer getRoomId() {
-        return roomId;
+        return roomid;
     }
 
     public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
+        this.roomid = roomId;
     }
 
     public Cinema getCinema() {
@@ -43,5 +46,21 @@ public class Room {
 
     public void setSeats(Map<SeatId, Seat> seats) {
         this.seats = seats;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface SeatRepository extends JpaRepository<Seat, SeatId> {
 
+    List<Seat> findByRoomRoomid(Integer roomid);
 
-    List<Seat> findByRoomRoomId(Integer roomId);
-
-    List<Seat> findByRoomRoomIdAndAvailable(Integer roomId, Boolean available);
+    List<Seat> findByRoomRoomidAndAvailable(Integer roomid, Boolean available);
 }
+

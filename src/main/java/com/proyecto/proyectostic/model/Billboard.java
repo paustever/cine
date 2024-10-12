@@ -12,8 +12,9 @@ public class Billboard {
     private Integer billboardId;
 
     @ManyToOne
-    @JoinColumn(name = "cinema_id", nullable = false)
+    @JoinColumn(name = "cinema_id", nullable = false)  // Usa snake_case para el nombre de la columna
     private Cinema cinema;
+
 
     // Inicializa la lista de showTimes
     @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -10,7 +10,7 @@ import java.util.Set;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer movieId;
+    private Integer movieid;
 
     private String name;
     private Integer year;
@@ -18,14 +18,17 @@ public class Movie {
     private Integer duration;
     private String director;
     private String review;
+    @Column(name = "moviecast")
     private String movieCast;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "startdate")
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "enddate")
+    private Date endDate;
     private String coverImageUrl;
 
     //@ManyToMany(mappedBy = "movie")
@@ -39,12 +42,13 @@ public class Movie {
 
     // Getters y Setters
 
-    public Integer getMovieId() {
-        return movieId;
+
+    public Integer getMovieid() {
+        return movieid;
     }
 
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
+    public void setMovieid(Integer movieid) {
+        this.movieid = movieid;
     }
 
     public String getName() {

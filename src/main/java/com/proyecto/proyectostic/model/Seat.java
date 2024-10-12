@@ -7,9 +7,9 @@ import jakarta.persistence.*;
 public class Seat {
 
     @Id
-    private Integer roomId;
+    private Integer roomid;
     @ManyToOne
-    @JoinColumn(name = "roomId", nullable = false)
+    @JoinColumn(name = "roomid", nullable = false)
     private Room room; // Clave compuesta - sala
 
     @Id
@@ -48,13 +48,8 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public Integer getRoomId() {
-        return roomId;
-    }
 
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
-    }
+
 
     public Boolean getAvailable() {
         return available;
@@ -64,4 +59,11 @@ public class Seat {
         this.available = available;
     }
 
+    public Integer getRoomid() {
+        return roomid;
+    }
+
+    public void setRoomid(Integer roomid) {
+        this.roomid = roomid;
+    }
 }

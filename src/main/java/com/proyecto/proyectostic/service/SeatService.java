@@ -44,7 +44,7 @@ public class SeatService {
 
 
     public List<Seat> getSeatsByRoomId(Integer roomId) {
-        return seatRepository.findByRoomRoomId(roomId);
+        return seatRepository.findByRoomRoomid(roomId);
     }
 
     public Seat saveSeat(Seat seat) {

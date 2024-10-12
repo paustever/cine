@@ -79,7 +79,7 @@ public class BillboardService {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new MovieNotFoundException("Película con ID " + movieId + " no encontrada"));
 
-        Billboard billboard = billboardRepository.findByCinemaCinemaId(cinemaId);
+        Billboard billboard = billboardRepository.findByCinema_Cinemaid(cinemaId);
         if (billboard == null) {
             throw new BillboardNotFoundException("No hay una cartelera asociada al cine ");
         }
@@ -96,7 +96,7 @@ public class BillboardService {
         Cinema cinema = cinemaRepository.findById(cinemaId)
                 .orElseThrow(() -> new CinemaNotFoundException("Cine con ID " + cinemaId + " no encontrado"));
 
-        Billboard billboard = billboardRepository.findByCinemaCinemaId(cinemaId);
+        Billboard billboard = billboardRepository.findByCinema_Cinemaid(cinemaId);
         if (billboard == null) {
             throw new BillboardNotFoundException("No hay una cartelera asociada al cine ");
         }
@@ -121,6 +121,8 @@ public class BillboardService {
     public List<Movie> getAllMoviesFromAllBillboards() {
         List<Billboard> billboards = billboardRepository.findAll();
         List<Movie> movies = new ArrayList<>();
+        // Log para ver si se están obteniendo carteleras
+        System.out.println("Carteleras encontradas: " + billboards.size());
 
         for (Billboard billboard : billboards) {
             for (ShowTime showTime : billboard.getShowTimes()) {
@@ -130,9 +132,12 @@ public class BillboardService {
                 }
             }
         }
+        // Log para ver cuántas películas se encontraron
+        System.out.println("Películas encontradas: " + movies.size());
 
         return movies;
     }
+
 
     // Metodo para obtener las carteleras con horarios disponibles a partir de la fecha actual
     public List<Billboard> getAvailableBillboards() {

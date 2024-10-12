@@ -2,7 +2,6 @@ package com.proyecto.proyectostic.service;
 
 import com.proyecto.proyectostic.excepcion.CinemaAlreadyExistsException;
 import com.proyecto.proyectostic.model.Cinema;
-import com.proyecto.proyectostic.model.User;
 import com.proyecto.proyectostic.repository.CinemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +36,8 @@ public class CinemaService {
     }
 
     public Cinema registerCinema(Cinema cinema) {
-        if (cinemaRepository.existsById(cinema.getCinemaId())) {
-            throw new CinemaAlreadyExistsException("Cinema with ID " + cinema.getCinemaId() + " already exists");
+        if (cinemaRepository.existsById(cinema.getCinemaid())) {
+            throw new CinemaAlreadyExistsException("Cinema with ID " + cinema.getCinemaid() + " already exists");
         }
         return cinemaRepository.save(cinema);
     }
