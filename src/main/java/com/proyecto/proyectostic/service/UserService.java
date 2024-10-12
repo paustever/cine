@@ -121,14 +121,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public List<Reservation> showAllReservationForUser(Integer userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return user.get().getReservations();
-        } else {
-            throw new UserNotFoundException("User not found with ID: " + userId);
-        }
-    }
+
 
 
 

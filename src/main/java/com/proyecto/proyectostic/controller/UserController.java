@@ -6,8 +6,11 @@ import com.proyecto.proyectostic.excepcion.UserAlreadyExistsException;
 import com.proyecto.proyectostic.excepcion.UserNotFoundException;
 import com.proyecto.proyectostic.model.Reservation;
 import com.proyecto.proyectostic.model.User;
+import com.proyecto.proyectostic.service.ReservationService;
 import com.proyecto.proyectostic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +23,11 @@ public class UserController {
 
     private final UserService userService;
 
+    private final ReservationService reservationService;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ReservationService reservationService) {
         this.userService = userService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping
@@ -64,18 +69,25 @@ public class UserController {
 
 
 
-    @PostMapping("/register")
+
+    @PostMapping(
+            value = "/register",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         try {
             User newUser = userService.registerUser(user);
-            return ResponseEntity.ok(newUser);
+            newUser.setPassword(null); // No exponer la contraseña en la respuesta
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
         } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.status(409).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            return ResponseEntity.status(500).build(); // Return a generic 500 error in case something unexpected happens
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logoutUser(@RequestHeader("Authorization") String token) {
@@ -113,9 +125,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}/reservations")
-    public ResponseEntity<List<Reservation>> getAllReservationsForUser(@PathVariable Integer id) {
-        List<Reservation> reservations = userService.showAllReservationForUser(id);
+    @GetMapping("/{Id}/reservations")
+    public ResponseEntity<List<Reservation>> getUserReservations(@PathVariable Integer userId) {
+        List<Reservation> reservations = reservationService.getReservationsByUserId(userId);
         return ResponseEntity.ok(reservations);
     }
 }
