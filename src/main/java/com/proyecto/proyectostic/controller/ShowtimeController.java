@@ -45,11 +45,17 @@ public class ShowtimeController {
         return showtimeService.getShowTimesByMovie(movie);
     }
     @GetMapping("/movie/{movieId}/date/{date}")
-    public Map<Cinema, List<ShowTime>> getShowTimesByMovieAndDate(@PathVariable Integer movieId, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    public Map<Cinema, List<ShowTime>> getShowTimesByMovieAndDate(
+            @PathVariable Integer movieId,
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+
         Movie movie = new Movie();
-        movie.setMovieid(movieId);  // Crear un objeto Movie con el ID proporcionado
+        movie.setMovieid(movieId);
+
+        // Cambiar la lógica para comparar solo las fechas (ignorando la hora)
         return showtimeService.getShowTimesByMovieAndDate(movie, date);
     }
+
 
 }
 

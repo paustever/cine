@@ -13,7 +13,9 @@ public interface ShowtimeRepository extends JpaRepository<ShowTime, Integer> {
     // Consulta para obtener todos los ShowTimes de una película
     @Query("SELECT s FROM ShowTime s WHERE s.movie = :movie")
     List<ShowTime> findByMovie(Movie movie);
+    @Query("SELECT s FROM ShowTime s WHERE s.movie = :movie AND FUNCTION('DATE', s.showtimeDate) = :showtimeDate")
     List<ShowTime> findByMovieAndShowtimeDate(Movie movie, Date showtimeDate);
+
 
 
 }
