@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 public class Cinema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer cinemaid;
 
     private String neighborhood;
