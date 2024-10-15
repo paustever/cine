@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@IdClass(ReservationDetailId.class) // Aquí se utiliza la clave compuesta
-public class ReservationDetail implements Serializable {
+@IdClass(ReservationDetailId.class)
+public class ReservationDetail {
 
     @Id
     @Column(name = "reservation_id")
@@ -16,18 +16,16 @@ public class ReservationDetail implements Serializable {
     private Integer seatId;
 
     @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
+    @JoinColumn(name = "reservation_id", nullable = false, insertable = false, updatable = false)
     private Reservation reservation;
+
     @ManyToOne
-    @JoinColumns({ // Usar @JoinColumns si Seat tiene una clave compuesta
-            @JoinColumn(name = "roomId", referencedColumnName = "roomId", nullable = false),
-            @JoinColumn(name = "rowNumber", referencedColumnName = "rowNumber", nullable = false),
-            @JoinColumn(name = "seatNumber", referencedColumnName = "seatNumber", nullable = false)
+    @JoinColumns({
+            @JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = false),
+            @JoinColumn(name = "row_number", referencedColumnName = "row_number", nullable = false),
+            @JoinColumn(name = "seat_number", referencedColumnName = "seat_number", nullable = false)
     })
     private Seat seat;
-
-    public ReservationDetail() {
-    }
 
     public Integer getReservationId() {
         return reservationId;
@@ -61,4 +59,5 @@ public class ReservationDetail implements Serializable {
         this.seat = seat;
     }
 }
+
 

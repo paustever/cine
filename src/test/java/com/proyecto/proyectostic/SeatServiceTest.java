@@ -36,7 +36,7 @@ public class SeatServiceTest {
     public void testGetSeatById_Success() throws Exception {
         // Crear un Seat con la clave compuesta
         Seat seat = new Seat();
-        seat.setRoomid(1);
+        seat.setRoomId(1);
         seat.setRowNumber(5);
         seat.setSeatNumber(10);
         seat.setAvailable(true);
@@ -51,7 +51,7 @@ public class SeatServiceTest {
         Seat result = seatService.getSeatById(seatId);
 
         // Verificar que el resultado sea correcto
-        assertEquals(1, result.getRoomid());
+        assertEquals(1, result.getRoomId());
         assertEquals(5, result.getRowNumber());
         assertEquals(10, result.getSeatNumber());
         assertEquals(true, result.getAvailable());
@@ -61,13 +61,13 @@ public class SeatServiceTest {
     public void testGetSeatsByRoomId() {
         // Crear asientos de prueba
         Seat seat1 = new Seat();
-        seat1.setRoomid(1);
+        seat1.setRoomId(1);
         seat1.setRowNumber(5);
         seat1.setSeatNumber(10);
         seat1.setAvailable(true);
 
         Seat seat2 = new Seat();
-        seat2.setRoomid(1);
+        seat2.setRoomId(1);
         seat2.setRowNumber(6);
         seat2.setSeatNumber(11);
         seat2.setAvailable(false);
@@ -75,7 +75,7 @@ public class SeatServiceTest {
         List<Seat> seats = Arrays.asList(seat1, seat2);
 
         // Mockear el repositorio para devolver la lista de asientos
-        when(seatRepository.findByRoomRoomid(1)).thenReturn(seats);
+        when(seatRepository.findByRoom_RoomId(1)).thenReturn(seats);
 
         // Llamar al método del servicio
         List<Seat> result = seatService.getSeatsByRoomId(1);
@@ -91,7 +91,7 @@ public class SeatServiceTest {
     @Test
     public void testSaveSeat() {
         Seat seat = new Seat();
-        seat.setRoomid(1);
+        seat.setRoomId(1);
         seat.setRowNumber(5);
         seat.setSeatNumber(10);
         seat.setAvailable(true);
@@ -103,7 +103,7 @@ public class SeatServiceTest {
         Seat result = seatService.saveSeat(seat);
 
         // Verificar que el asiento fue guardado correctamente
-        assertEquals(1, result.getRoomid());
+        assertEquals(1, result.getRoomId());
         assertEquals(5, result.getRowNumber());
         assertEquals(10, result.getSeatNumber());
         assertEquals(true, result.getAvailable());
@@ -112,7 +112,7 @@ public class SeatServiceTest {
     @Test
     public void testDeleteSeat_Success() throws Exception {
         Seat seat = new Seat();
-        seat.setRoomid(1);
+        seat.setRoomId(1);
         seat.setRowNumber(5);
         seat.setSeatNumber(10);
         seat.setAvailable(true);
@@ -147,7 +147,7 @@ public class SeatServiceTest {
     public void testUpdateSeatAvailability() throws Exception {
         // Crear un Seat de prueba
         Seat seat = new Seat();
-        seat.setRoomid(1);
+        seat.setRoomId(1);
         seat.setRowNumber(5);
         seat.setSeatNumber(10);
         seat.setAvailable(false);  // El estado original del asiento

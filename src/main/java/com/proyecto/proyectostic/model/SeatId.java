@@ -1,28 +1,34 @@
 package com.proyecto.proyectostic.model;
 
+import jakarta.persistence.Column;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class SeatId implements Serializable {
 
-    private Integer roomid;      // ID de la sala
-    private Integer rowNumber;   // Número de fila
-    private Integer seatNumber;  // Número de asiento
+    @Column(name = "room_id")  // Consistente con el nombre de la columna
+    private Integer roomId;
 
+    @Column(name = "row_number")
+    private Integer rowNumber;
+
+    @Column(name = "seat_number")
+    private Integer seatNumber;
     public SeatId() {}
 
     public SeatId(Integer roomid, Integer rowNumber, Integer seatNumber) {
-        this.roomid = roomid;
+        this.roomId = roomid;
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
     }
 
     public Integer getRoomId() {
-        return roomid;
+        return roomId;
     }
 
     public void setRoomId(Integer roomId) {
-        this.roomid = roomId;
+        this.roomId = roomId;
     }
 
     public Integer getRowNumber() {
@@ -46,13 +52,13 @@ public class SeatId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SeatId seatId = (SeatId) o;
-        return Objects.equals(roomid, seatId.roomid) &&
+        return Objects.equals(roomId, seatId.roomId) &&
                 Objects.equals(rowNumber, seatId.rowNumber) &&
                 Objects.equals(seatNumber, seatId.seatNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomid, rowNumber, seatNumber);
+        return Objects.hash(roomId, rowNumber, seatNumber);
     }
 }

@@ -1,5 +1,6 @@
 package com.proyecto.proyectostic.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.proyecto.proyectostic.model.*;
 import jakarta.persistence.*;
 
@@ -18,8 +19,8 @@ public class ShowTime {
 
     @Id
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "showtime_date")  // Mantén el nombre de la columna como 'showtime_date' en la BD
-    private Date showtimeDate;  // Cambia el nombre de la propiedad a camelCase en Java
+    @Column(name = "showtime_date")
+    private Date showtimeDate;
 
     @Id
     @ManyToOne
@@ -30,10 +31,10 @@ public class ShowTime {
     private List<Reservation> reservations;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "billboard_id", nullable = false)
     private Billboard billboard;
 
-    // Getters y Setters
     public Movie getMovie() {
         return movie;
     }

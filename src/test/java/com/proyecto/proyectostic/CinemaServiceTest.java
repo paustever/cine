@@ -56,7 +56,7 @@ class CinemaServiceTest {
     void testGetCinemaById() {
         // Crear un cine de prueba
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1);
+        cinema.setCinemaId(1);
         cinema.setNeighborhood("Barrio Test");
 
         // Mockear el comportamiento del repositorio
@@ -94,7 +94,7 @@ class CinemaServiceTest {
     void testRegisterCinema() {
         // Crear un cine de prueba
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1);
+        cinema.setCinemaId(1);
         cinema.setNeighborhood("Barrio Unico");
 
         // Mockear el comportamiento del repositorio para devolver que el cine no existe
@@ -113,7 +113,7 @@ class CinemaServiceTest {
     void testRegisterCinema_CinemaAlreadyExists() {
         // Crear un cine de prueba
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1);
+        cinema.setCinemaId(1);
 
         // Mockear el comportamiento del repositorio para devolver que el cine ya existe
         when(cinemaRepository.existsById(1)).thenReturn(true);

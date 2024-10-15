@@ -48,7 +48,7 @@ class BillboardServiceTest {
 
         // Crear película de prueba
         Movie movie = new Movie();
-        movie.setMovieid(1);
+        movie.setMovieId(1);
         movie.setName("Movie 1");
 
         // Crear showtime de prueba y agregar a la cartelera
@@ -77,7 +77,7 @@ class BillboardServiceTest {
 
         // Crear película de prueba
         Movie movie = new Movie();
-        movie.setMovieid(1);
+        movie.setMovieId(1);
         movie.setName("Movie 1");
 
         // Crear habitación de prueba

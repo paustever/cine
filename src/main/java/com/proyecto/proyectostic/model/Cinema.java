@@ -1,31 +1,44 @@
 package com.proyecto.proyectostic.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Cinema {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cinema_id")
+    private Integer cinemaId;
 
-    private Integer cinemaid;
-
+    @Column(name = "neighborhood")
     private String neighborhood;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "telephone")
     private String telephone;
-    private Integer noroom;
+
+    @Column(name = "no_room")
+    private Integer noRoom;
 
     public Cinema() {
     }
 
-    public Integer getCinemaid() {
-        return cinemaid;
+    public Integer getCinemaId() {
+        return cinemaId;
     }
 
-    public void setCinemaid(Integer cinemaId) {
-        this.cinemaid = cinemaId;
+    public void setCinemaId(Integer cinemaId) {
+        this.cinemaId = cinemaId;
+    }
+
+    public Integer getNoRoom() {
+        return noRoom;
+    }
+
+    public void setNoRoom(Integer noRoom) {
+        this.noRoom = noRoom;
     }
 
     public String getNeighborhood() {
@@ -52,11 +65,4 @@ public class Cinema {
         this.telephone = telephone;
     }
 
-    public Integer getNoroom() {
-        return noroom;
-    }
-
-    public void setNoroom(Integer noroom) {
-        this.noroom = noroom;
-    }
 }

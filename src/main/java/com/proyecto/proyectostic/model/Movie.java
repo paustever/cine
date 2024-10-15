@@ -8,47 +8,56 @@ import java.util.Set;
 
 @Entity
 public class Movie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer movieid;
+    @Column(name = "movie_id")
+    private Integer movieId;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "year")
     private Integer year;
+
+    @Column(name = "language")
     private String language;
+
+    @Column(name = "duration")
     private Integer duration;
+
+    @Column(name = "director")
     private String director;
+
+    @Column(name = "review")
     private String review;
-    @Column(name = "moviecast")
+
+    @Column(name = "movie_cast")
     private String movieCast;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "startdate")
+    @Column(name = "start_date")
     private Date startDate;
 
-
     @Temporal(TemporalType.DATE)
-    @Column(name = "enddate")
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "cover_image_url")
     private String coverImageUrl;
 
-    //@ManyToMany(mappedBy = "movie")
-    //private Set<Billboard> billboards = new HashSet<>();
+//    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<ShowTime> showTimes = new HashSet<>();
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ShowTime> showTimes = new HashSet<>();
-
-    // Constructors
-    public Movie() {}
-
-    // Getters y Setters
-
-
-    public Integer getMovieid() {
-        return movieid;
+    public Movie() {
     }
 
-    public void setMovieid(Integer movieid) {
-        this.movieid = movieid;
+    public Integer getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Integer movieId) {
+        this.movieId = movieId;
     }
 
     public String getName() {
@@ -130,21 +139,13 @@ public class Movie {
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
     }
-
-//    public Set<Billboard> getBillboards() {
-//        return billboards;
+//
+//    public Set<ShowTime> getShowTimes() {
+//        return showTimes;
 //    }
 //
-//    public void setBillboards(Set<Billboard> billboards) {
-//        this.billboards = billboards;
+//    public void setShowTimes(Set<ShowTime> showTimes) {
+//        this.showTimes = showTimes;
 //    }
-
-    public Set<ShowTime> getShowTimes() {
-        return showTimes;
-    }
-
-    public void setShowTimes(Set<ShowTime> showTimes) {
-        this.showTimes = showTimes;
-    }
 }
 

@@ -9,26 +9,29 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reservation_id")
     private Integer reservationId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", nullable = false),
             @JoinColumn(name = "showtime_date", referencedColumnName = "showtime_date", nullable = false),
             @JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = false)
     })
-
     private ShowTime showtime;
-    private Date date;
 
-    public Reservation() {
-    }
+    @Column(name = "reservation_date")
+    private Date date;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservationDetail> reservationDetails;
+
+    public Reservation() {
+    }
 
     public Integer getReservationId() {
         return reservationId;

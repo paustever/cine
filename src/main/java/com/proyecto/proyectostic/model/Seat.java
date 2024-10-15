@@ -7,22 +7,26 @@ import jakarta.persistence.*;
 public class Seat {
 
     @Id
-    private Integer roomid;
+    @Column(name = "room_id")
+    private Integer roomId;
+
     @ManyToOne
-    @JoinColumn(name = "roomid", nullable = false)
-    private Room room; // Clave compuesta - sala
+    @JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = false, insertable = false, updatable = false)
+    private Room room;
 
     @Id
-    private Integer rowNumber; // Clave compuesta - número de fila
+    @Column(name = "row_number")
+    private Integer rowNumber;
 
     @Id
-    private Integer seatNumber; // Clave compuesta - número de asiento
+    @Column(name = "seat_number")
+    private Integer seatNumber;
 
+    @Column(name = "available")
     private Boolean available;
 
-    public Seat() {}
-
-    // Getters y Setters
+    public Seat(){
+    }
 
     public Room getRoom() {
         return room;
@@ -48,9 +52,6 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-
-
-
     public Boolean getAvailable() {
         return available;
     }
@@ -59,11 +60,11 @@ public class Seat {
         this.available = available;
     }
 
-    public Integer getRoomid() {
-        return roomid;
+    public Integer getRoomId() {
+        return roomId;
     }
 
-    public void setRoomid(Integer roomid) {
-        this.roomid = roomid;
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
     }
 }

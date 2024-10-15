@@ -4,5 +4,5 @@ import com.proyecto.proyectostic.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoomRepository extends JpaRepository<Room, Integer> {
-    Room findByRoomid(Integer roomid);
+    Room findByRoomId(Integer roomId);
 }

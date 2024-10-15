@@ -1,5 +1,6 @@
 package com.proyecto.proyectostic.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +10,15 @@ public class Billboard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "billboard_id")
     private Integer billboardId;
 
     @ManyToOne
-    @JoinColumn(name = "cinema_id", nullable = false)  // Usa snake_case para el nombre de la columna
+    @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 
-
-    // Inicializa la lista de showTimes
     @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ShowTime> showTimes = new ArrayList<>();
 
     public Billboard() {

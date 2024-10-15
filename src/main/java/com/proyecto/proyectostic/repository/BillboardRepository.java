@@ -9,14 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-
 @Repository
 public interface BillboardRepository extends JpaRepository<Billboard, Integer> {
-    Billboard findByCinema_Cinemaid(Integer cinemaid);
+    Billboard findByCinema_CinemaId(Integer cinemaid);
 
-    // Metodo para obtener todas las carteleras con horarios disponibles a partir de hoy
+    // Método para obtener todas las carteleras con horarios disponibles a partir de hoy
     @Query("SELECT b FROM Billboard b JOIN b.showTimes s WHERE s.showtimeDate >= :currentDate")
     List<Billboard> findAvailableBillboards(@Param("currentDate") Date currentDate);
-
 }
-

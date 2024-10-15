@@ -1,5 +1,6 @@
 package com.proyecto.proyectostic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,27 +10,32 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roomid;
+    @Column(name = "room_id")
+    private Integer roomId;
+
 
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Map<SeatId, Seat> seats = new HashMap<>();
 
+    @Column(name = "capacity")
     private int capacity;
-    private int roomNumber;
 
+    @Column(name = "room_number")
+    private int roomNumber;
     public Room() {
     }
 
     public Integer getRoomId() {
-        return roomid;
+        return roomId;
     }
 
     public void setRoomId(Integer roomId) {
-        this.roomid = roomId;
+        this.roomId = roomId;
     }
 
     public Cinema getCinema() {

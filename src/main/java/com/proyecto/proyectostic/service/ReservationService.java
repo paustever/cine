@@ -85,7 +85,7 @@ public class ReservationService {
         reservationRepository.delete(reservationfound);
     }
     public List<Reservation> getReservationsByUserId(Integer userId) {
-        return reservationRepository.findByUserUserId(userId);
+        return reservationRepository.findByUser_UserId(userId);
     }
 }
 

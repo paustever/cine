@@ -8,8 +8,9 @@ import java.util.Optional;
 
 public interface SeatRepository extends JpaRepository<Seat, SeatId> {
 
-    List<Seat> findByRoomRoomid(Integer roomid);
+    List<Seat> findByRoom_RoomId(Integer roomid);
 
-    List<Seat> findByRoomRoomidAndAvailable(Integer roomid, Boolean available);
+    List<Seat> findByRoom_RoomIdAndAvailable(Integer roomId, Boolean available);
 }
+
 

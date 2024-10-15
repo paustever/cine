@@ -6,19 +6,27 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "\"user\"")  // Se utiliza comillas dobles alrededor de "user"
+@Table(name = "user_table")  // Cambié "user" a "user_table" para evitar problemas con palabras reservadas.
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Integer userId;
-    private String name;
-    private String lastName;
-    private String email;
-    private String telephone;
-    private String password;
 
-    public User() {
-    }
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "telephone")
+    private String telephone;
+
+    @Column(name = "password")
+    private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
@@ -28,6 +36,10 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public User() {
+
     }
 
     public Integer getUserId() {

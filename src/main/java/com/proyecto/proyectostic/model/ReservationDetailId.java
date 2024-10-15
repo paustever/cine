@@ -17,6 +17,7 @@ public class ReservationDetailId implements Serializable {
         this.seatId = seatId;
     }
 
+    // Getters y setters
     public Integer getReservationId() {
         return reservationId;
     }
@@ -33,6 +34,7 @@ public class ReservationDetailId implements Serializable {
         this.seatId = seatId;
     }
 
+    // Implementación de equals y hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,5 +49,3 @@ public class ReservationDetailId implements Serializable {
         return Objects.hash(reservationId, seatId);
     }
 }
-
-
