@@ -122,12 +122,12 @@ class BillboardServiceTest {
 
         // Crear cine de prueba con atributos completos
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1); // ID que buscas en el test
+        cinema.setCinemaId(1); // ID que buscas en el test
         cinema.setAddress("123 Street Name");
 
         // Crear película de prueba con atributos completos
         Movie movie = new Movie();
-        movie.setMovieid(1);
+        movie.setMovieId(1);
         movie.setName("Movie 1");
 
         // Crear cartelera de prueba con atributos completos
@@ -146,7 +146,7 @@ class BillboardServiceTest {
         // Mockear el comportamiento de los repositorios
         when(cinemaRepository.findById(1)).thenReturn(Optional.of(cinema)); // Mock del cine
         when(movieRepository.findById(1)).thenReturn(Optional.of(movie)); // Mock de la película
-        when(billboardRepository.findByCinema_Cinemaid(1)).thenReturn(billboard); // Mock de la cartelera
+        when(billboardRepository.findByCinema_CinemaId(1)).thenReturn(billboard); // Mock de la cartelera
 
         // Llamar al metodo del servicio
         billboardService.removeMovieFromBillboard(1, 1);
@@ -165,7 +165,7 @@ class BillboardServiceTest {
 
         // Crear cine de prueba con atributos completos
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1); // ID que buscas en el test
+        cinema.setCinemaId(1); // ID que buscas en el test
         cinema.setAddress("123 Street Name");
 
         // Crear cartelera de prueba con atributos completos
@@ -174,7 +174,7 @@ class BillboardServiceTest {
         billboard.setCinema(cinema); // Relación con el cine
 
         // Mockear el comportamiento de los repositorios
-        when(billboardRepository.findByCinema_Cinemaid(1)).thenReturn(billboard); // Mock de la cartelera
+        when(billboardRepository.findByCinema_CinemaId(1)).thenReturn(billboard); // Mock de la cartelera
         when(cinemaRepository.findById(1)).thenReturn(Optional.of(cinema)); // Mock del cine
 
         // Llamar al metodo del servicio
@@ -190,19 +190,19 @@ class BillboardServiceTest {
 
         // Crear cine de prueba
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1);
+        cinema.setCinemaId(1);
         cinema.setAddress("123 Street Name");
         cinema.setNeighborhood("Downtown");
-        cinema.setNoroom(5);
+        cinema.setNoRoom(5);
         cinema.setTelephone("123-456-789");
 
         // Crear películas de prueba
         Movie movie1 = new Movie();
-        movie1.setMovieid(1);
+        movie1.setMovieId(1);
         movie1.setName("Movie 1");
 
         Movie movie2 = new Movie();
-        movie2.setMovieid(2);
+        movie2.setMovieId(2);
         movie2.setName("Movie 2");
 
         // Crear cartelera de prueba con showtimes
@@ -246,15 +246,15 @@ class BillboardServiceTest {
 
         // Crear cine de prueba
         Cinema cinema = new Cinema();
-        cinema.setCinemaid(1);
+        cinema.setCinemaId(1);
         cinema.setAddress("123 Street Name");
         cinema.setNeighborhood("Downtown");
-        cinema.setNoroom(5);
+        cinema.setNoRoom(5);
         cinema.setTelephone("123-456-789");
 
         // Crear película de prueba
         Movie movie = new Movie();
-        movie.setMovieid(1);
+        movie.setMovieId(1);
         movie.setName("Movie 1");
 
         // Crear cartelera de prueba con showtimes en el futuro
