@@ -1,9 +1,11 @@
 package com.proyecto.proyectostic.controller;
 
 import com.proyecto.proyectostic.model.Billboard;
+import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.model.ShowTime;
 import com.proyecto.proyectostic.service.BillboardService;
+import com.proyecto.proyectostic.service.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,9 @@ import java.util.Optional;
 public class BillboardController {
 
     private final BillboardService billboardService;
+    @Autowired
+    private ShowtimeService showtimeService;
+
 
     @Autowired
     public BillboardController(BillboardService billboardService) {
@@ -85,5 +90,17 @@ public class BillboardController {
         List<Billboard> availableBillboards = billboardService.getAvailableBillboards();
         return ResponseEntity.ok(availableBillboards);
     }
+
+
+    @GetMapping("/movies/{movieId}/cinemas")
+    public List<Cinema> getCinemasByMovie(@PathVariable Integer movieId) {
+        return billboardService.getCinemasByMovie(movieId);
+    }
+
+    @GetMapping("/movies/{movieId}/cinemas/{cinemaId}/showtimes")
+    public List<ShowTime> getShowtimesByMovieAndCinema(@PathVariable Integer movieId, @PathVariable Integer cinemaId) {
+        return showtimeService.getShowtimesByMovieAndCinema(movieId, cinemaId);
+    }
+
 
 }

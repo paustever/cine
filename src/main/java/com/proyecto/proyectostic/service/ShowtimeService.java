@@ -1,16 +1,16 @@
 package com.proyecto.proyectostic.service;
 
+import com.proyecto.proyectostic.excepcion.BillboardNotFoundException;
+import com.proyecto.proyectostic.model.Billboard;
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.model.ShowTime;
+import com.proyecto.proyectostic.repository.BillboardRepository;
 import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +18,8 @@ public class ShowtimeService {
 
     @Autowired
     private ShowtimeRepository showtimeRepository;
+    @Autowired
+    private BillboardRepository billboardRepository;
 
 
     public List<ShowTime> getAllShowtimes() {
@@ -51,6 +53,21 @@ public class ShowtimeService {
         return showTimes.stream()
                 .sorted(Comparator.comparing(ShowTime::getShowtimeDate)) // Ordenar por horario
                 .collect(Collectors.groupingBy(showTime -> showTime.getBillboard().getCinema()));
+    }
+
+
+    public List<ShowTime> getShowtimesByMovieAndCinema(Integer movieId, Integer cinemaId) {
+        Billboard billboard = billboardRepository.findByCinema_CinemaId(cinemaId);
+        if (billboard == null) {
+            throw new BillboardNotFoundException("No se encontró una cartelera para el cine con ID " + cinemaId);
+        }
+        List<ShowTime> showtimes = new ArrayList<>();
+        for (ShowTime showTime : billboard.getShowTimes()) {
+            if (showTime.getMovie().getMovieId().equals(movieId)) {
+                showtimes.add(showTime);
+            }
+        }
+        return showtimes;
     }
 
 }
