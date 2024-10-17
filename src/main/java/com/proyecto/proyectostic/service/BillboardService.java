@@ -32,8 +32,11 @@ public class BillboardService {
     private ShowtimeRepository showTimeRepository;
 
     public List<Movie> getMoviesFromBillboard(Integer billboardId) {
+
         Billboard billboard = billboardRepository.findById(billboardId)
-                .orElseThrow(() -> new BillboardNotFoundException("Cartelera con ID " + billboardId + " no encontrada"));
+                .orElseThrow(() -> {
+                    throw new BillboardNotFoundException("Cartelera con ID " + billboardId + " no encontrada");
+                });
 
         List<ShowTime> showTimes = billboard.getShowTimes();
         List<Movie> movies = new ArrayList<>();
