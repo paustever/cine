@@ -1,6 +1,7 @@
 package com.proyecto.proyectostic.service;
 
 import com.proyecto.proyectostic.excepcion.BillboardNotFoundException;
+import com.proyecto.proyectostic.excepcion.ShowTimeNotFoundException;
 import com.proyecto.proyectostic.model.Billboard;
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
@@ -10,6 +11,10 @@ import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,6 +74,46 @@ public class ShowtimeService {
         }
         return showtimes;
     }
+    public List<LocalDate> getAvailableDatesForMovieInCinema(Integer movieId, Integer cinemaId) {
+        Billboard billboard = billboardRepository.findByCinema_CinemaId(cinemaId);
+        if (billboard == null) {
+            throw new BillboardNotFoundException("No se encontró una cartelera para el cine con ID " + cinemaId);
+        }
+        Set<LocalDate> availableDates = new HashSet<>();
+        for (ShowTime showTime : billboard.getShowTimes()) {
+            if (showTime.getMovie().getMovieId().equals(movieId)) {
+                Date showtimeDate = showTime.getShowtimeDate();
+                LocalDate localDate = Instant.ofEpochMilli(showtimeDate.getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                availableDates.add(localDate); // Agregar la fecha convertida
+            }
+        }
+        return new ArrayList<>(availableDates); // Convertir a lista y devolver
+    }
 
+    public ShowTime getShowtimeByMovieCinemaDateAndTime(Integer movieId, Integer cinemaId, LocalDate date, LocalTime time) {
+        Billboard billboard = billboardRepository.findByCinema_CinemaId(cinemaId);
+        if (billboard == null) {
+            throw new BillboardNotFoundException("No se encontró una cartelera para el cine con ID " + cinemaId);
+        }
+        for (ShowTime showTime : billboard.getShowTimes()) {
+            if (showTime.getMovie().getMovieId().equals(movieId)) {
+                // Convertir la fecha de ShowTime para comparar
+                Date showtimeDate = showTime.getShowtimeDate();
+                LocalDate localDate = Instant.ofEpochMilli(showtimeDate.getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                LocalTime localTime = Instant.ofEpochMilli(showtimeDate.getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalTime();
+                // Verificar si coincide la fecha y el tiempo
+                if (localDate.equals(date) && localTime.equals(time)) {
+                    return showTime;
+                }
+            }
+        }
+        throw new ShowTimeNotFoundException("No se encontró un showtime para la película en el cine, fecha y hora especificados.");
+    }
 }
 
