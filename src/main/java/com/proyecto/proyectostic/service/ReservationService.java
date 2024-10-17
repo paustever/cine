@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -45,23 +46,37 @@ public class ReservationService {
     }
 
 
-    public void reserveSeats(User user, List<SeatId> seatIds, ShowTime showtime) throws SeatNotAvailableException {
+    @Transactional  // Añadir transacción para asegurar atomicidad
+    public void reserveSeats(User user, List<SeatId> seatIds, ShowTime showtime) throws Exception {
         Reservation reservation = new Reservation();
         reservation.setUser(user);
         reservation.setShowtime(showtime);
         reservation.setDate(showtime.getShowtimeDate());
 
+        // Verifica que todos los asientos estén disponibles antes de continuar
+        List<Seat> seatsToReserve = new ArrayList<>();
         for (SeatId seatId : seatIds) {
-            // Delegar la lógica de reserva del asiento a SeatService
-            Seat seat = seatService.reserveSeat(seatId);
+            Seat seat = seatService.getSeatById(seatId); // Obtener el asiento
+            if (!seat.getAvailable()) {
+                throw new SeatNotAvailableException("El asiento " + seatId + " ya está ocupado");
+            }
+            seatsToReserve.add(seat); // Agregar a la lista de asientos a reservar
+        }
 
-            // Crear el detalle de la reserva
+        // Guardar la reserva
+        reservationRepository.save(reservation);
+
+        // Luego de verificar, realizar las reservas de los asientos
+        for (Seat seat : seatsToReserve) {
+            seat.setAvailable(false);  // Marcar como reservado
+            seatService.saveSeat(seat);  // Guardar el estado actualizado
+
+            // Crear y guardar el detalle de la reserva
             ReservationDetail reservationDetail = new ReservationDetail();
             reservationDetail.setReservation(reservation);
             reservationDetail.setSeat(seat);
             reservationDetailRepository.save(reservationDetail);
         }
-        reservationRepository.save(reservation);
     }
 
 

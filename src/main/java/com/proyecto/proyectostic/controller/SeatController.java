@@ -71,4 +71,6 @@ public class SeatController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 }
