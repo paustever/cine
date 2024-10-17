@@ -3,6 +3,7 @@ package com.proyecto.proyectostic.controller;
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.model.ShowTime;
+import com.proyecto.proyectostic.model.ShowTimeId;
 import com.proyecto.proyectostic.service.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,9 +25,13 @@ public class ShowtimeController {
         return showtimeService.getAllShowtimes();
     }
 
-    @GetMapping("/{id}")
-    public ShowTime getShowtimeById(@PathVariable Integer id) {
-        return showtimeService.getShowtimeById(id);
+    @GetMapping("/{movieId}/{showtimeDate}/{roomId}")
+    public ShowTime getShowtimeById(@PathVariable Integer movieId,
+                                    @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date showtimeDate,
+                                    @PathVariable Integer roomId) {
+
+        ShowTimeId showTimeId = new ShowTimeId(movieId, showtimeDate, roomId);
+        return showtimeService.getShowtimeById(showTimeId);
     }
 
     @PostMapping
@@ -34,10 +39,16 @@ public class ShowtimeController {
         return showtimeService.saveShowtime(showtime);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteShowtime(@PathVariable Integer id) {
-        showtimeService.deleteShowtime(id);
+    @DeleteMapping("/{movieId}/{showtimeDate}/{roomId}")
+    public void deleteShowtime(@PathVariable Integer movieId,
+                               @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date showtimeDate,
+                               @PathVariable Integer roomId) {
+
+        ShowTimeId showTimeId = new ShowTimeId(movieId, showtimeDate, roomId);
+        showtimeService.deleteShowtime(showTimeId);
     }
+
+
     @GetMapping("/movie/{movieId}")
     public Map<Cinema, List<ShowTime>> getShowTimesByMovie(@PathVariable Integer movieId) {
         Movie movie = new Movie();
