@@ -2,10 +2,12 @@ package com.proyecto.proyectostic.controller;
 
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
+import com.proyecto.proyectostic.model.Seat;
 import com.proyecto.proyectostic.model.ShowTime;
 import com.proyecto.proyectostic.service.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -55,6 +57,15 @@ public class ShowtimeController {
         // Cambiar la lógica para comparar solo las fechas (ignorando la hora)
         return showtimeService.getShowTimesByMovieAndDate(movie, date);
     }
+    @GetMapping("/{showtimeId}/available-seats")
+    public ResponseEntity<List<Seat>> getAvailableSeats(@PathVariable Integer showtimeId) {
+        List<Seat> availableSeats = showtimeService.getAvailableSeatsForShowtime(showtimeId);
+        if (availableSeats.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(availableSeats);
+    }
+
 
 
 }

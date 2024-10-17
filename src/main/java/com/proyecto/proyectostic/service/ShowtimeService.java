@@ -2,10 +2,7 @@ package com.proyecto.proyectostic.service;
 
 import com.proyecto.proyectostic.excepcion.BillboardNotFoundException;
 import com.proyecto.proyectostic.excepcion.ShowTimeNotFoundException;
-import com.proyecto.proyectostic.model.Billboard;
-import com.proyecto.proyectostic.model.Cinema;
-import com.proyecto.proyectostic.model.Movie;
-import com.proyecto.proyectostic.model.ShowTime;
+import com.proyecto.proyectostic.model.*;
 import com.proyecto.proyectostic.repository.BillboardRepository;
 import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +83,10 @@ public class ShowtimeService {
                 LocalDate localDate = Instant.ofEpochMilli(showtimeDate.getTime())
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
-                availableDates.add(localDate); // Agregar la fecha convertida
+                availableDates.add(localDate);
             }
         }
-        return new ArrayList<>(availableDates); // Convertir a lista y devolver
+        return new ArrayList<>(availableDates);
     }
 
     public ShowTime getShowtimeByMovieCinemaDateAndTime(Integer movieId, Integer cinemaId, LocalDate date, LocalTime time) {
@@ -114,6 +111,15 @@ public class ShowtimeService {
             }
         }
         throw new ShowTimeNotFoundException("No se encontró un showtime para la película en el cine, fecha y hora especificados.");
+    }
+    public List<Seat> getAvailableSeatsForShowtime(Integer showtimeId) {
+        ShowTime showtime = showtimeRepository.findById(showtimeId)
+                .orElseThrow(() -> new ShowTimeNotFoundException("No se encontró el showtime con ID " + showtimeId));
+
+        // Obtener los asientos desde el Map y filtrarlos
+        return showtime.getRoom().getSeats().values().stream() // Obtener los valores del Map (asientos)
+                .filter(Seat::getAvailable) // Filtrar los asientos que están disponibles
+                .collect(Collectors.toList()); // Convertir la lista filtrada a List
     }
 }
 

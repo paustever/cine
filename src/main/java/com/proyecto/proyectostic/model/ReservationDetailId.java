@@ -1,14 +1,14 @@
 package com.proyecto.proyectostic.model;
 
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class ReservationDetailId implements Serializable {
 
     private Integer reservationId;
     private Integer seatId;
-
-    // Constructor por defecto
     public ReservationDetailId() {
     }
 
@@ -17,7 +17,7 @@ public class ReservationDetailId implements Serializable {
         this.seatId = seatId;
     }
 
-    // Getters y setters
+    // Getters y Setters
     public Integer getReservationId() {
         return reservationId;
     }
@@ -34,18 +34,22 @@ public class ReservationDetailId implements Serializable {
         this.seatId = seatId;
     }
 
-    // Implementación de equals y hashCode
+    // Sobrescribir equals y hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ReservationDetailId that = (ReservationDetailId) o;
-        return Objects.equals(reservationId, that.reservationId) &&
-                Objects.equals(seatId, that.seatId);
+
+        if (!Objects.equals(reservationId, that.reservationId)) return false;
+        return Objects.equals(seatId, that.seatId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reservationId, seatId);
+        int result = reservationId != null ? reservationId.hashCode() : 0;
+        result = 31 * result + (seatId != null ? seatId.hashCode() : 0);
+        return result;
     }
 }
