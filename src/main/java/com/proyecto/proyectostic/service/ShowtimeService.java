@@ -3,6 +3,7 @@ package com.proyecto.proyectostic.service;
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.model.ShowTime;
+import com.proyecto.proyectostic.model.ShowTimeId;
 import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class ShowtimeService {
         return showtimeRepository.findAll();
     }
 
-    public ShowTime getShowtimeById(Integer id) {
+    public ShowTime getShowtimeById(ShowTimeId id) {
         return showtimeRepository.findById(id).orElse(null);
     }
 
@@ -32,7 +33,7 @@ public class ShowtimeService {
         return showtimeRepository.save(showtime);
     }
 
-    public void deleteShowtime(Integer id) {
+    public void deleteShowtime(ShowTimeId id) {
         showtimeRepository.deleteById(id);
     }
 
