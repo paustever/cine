@@ -24,10 +24,10 @@ public class ShowtimeController {
         return showtimeService.getAllShowtimes();
     }
 
-    @GetMapping("/{id}")
-    public ShowTime getShowtimeById(@PathVariable Integer id) {
-        return showtimeService.getShowtimeById(id);
-    }
+//    @GetMapping("/{id}")
+//    public ShowTime getShowtimeById(@PathVariable Integer id) {
+//        return showtimeService.getShowtimeById(id);
+//    }
 
     @PostMapping
     public ShowTime createShowtime(@RequestBody ShowTime showtime) {
@@ -35,10 +35,10 @@ public class ShowtimeController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public void deleteShowtime(@PathVariable Integer id) {
-        showtimeService.deleteShowtime(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteShowtime(@PathVariable Integer id) {
+//        showtimeService.deleteShowtime(id);
+//    }
     @GetMapping("/movie/{movieId}")
     public Map<Cinema, List<ShowTime>> getShowTimesByMovie(@PathVariable Integer movieId) {
         Movie movie = new Movie();
