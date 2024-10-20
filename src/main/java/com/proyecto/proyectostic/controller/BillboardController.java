@@ -86,4 +86,7 @@ public class BillboardController {
         return ResponseEntity.ok(availableBillboards);
     }
 
+
+
+
 }

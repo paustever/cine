@@ -27,6 +27,16 @@ public class ReservationDetail {
     })
     private Seat seat;
 
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", insertable = false, updatable = false),
+            @JoinColumn(name = "showtime_date", referencedColumnName = "showtime_date", insertable = false, updatable = false),
+            @JoinColumn(name = "room_id", referencedColumnName = "room_id", insertable = false, updatable = false)
+    })
+    private ShowTime showtime;
+
+
+
     public Integer getReservationId() {
         return reservationId;
     }
@@ -57,6 +67,14 @@ public class ReservationDetail {
 
     public void setSeat(Seat seat) {
         this.seat = seat;
+    }
+
+    public ShowTime getShowtime() {
+        return showtime;
+    }
+
+    public void setShowtime(ShowTime showtime) {
+        this.showtime = showtime;
     }
 }
 

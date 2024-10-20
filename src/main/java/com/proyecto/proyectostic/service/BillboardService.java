@@ -162,4 +162,5 @@ public class BillboardService {
         return billboardRepository.findAvailableBillboards(currentDate);
     }
 
+
 }

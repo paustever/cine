@@ -16,4 +16,5 @@ public interface BillboardRepository extends JpaRepository<Billboard, Integer> {
     // Método para obtener todas las carteleras con horarios disponibles a partir de hoy
     @Query("SELECT b FROM Billboard b JOIN b.showTimes s WHERE s.showtimeDate >= :currentDate")
     List<Billboard> findAvailableBillboards(@Param("currentDate") Date currentDate);
+
 }

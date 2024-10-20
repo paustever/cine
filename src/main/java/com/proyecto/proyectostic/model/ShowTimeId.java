@@ -43,6 +43,7 @@ public class ShowTimeId implements Serializable {
         return room;
     }
 
+
     public void setRoom(Integer room) {
         this.room = room;
     }

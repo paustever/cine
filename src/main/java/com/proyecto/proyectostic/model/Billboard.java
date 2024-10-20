@@ -13,6 +13,7 @@ public class Billboard {
     @Column(name = "billboard_id")
     private Integer billboardId;
 
+
     @ManyToOne
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;

@@ -1,5 +1,6 @@
 package com.proyecto.proyectostic.service;
 
+import com.proyecto.proyectostic.excepcion.InvalidCredentialsException;
 import com.proyecto.proyectostic.excepcion.SeatNotAvailableException;
 import com.proyecto.proyectostic.excepcion.SeatNotFoundException;
 import com.proyecto.proyectostic.model.*;
@@ -26,6 +27,8 @@ public class ReservationService {
     private ReservationDetailRepository reservationDetailRepository;
     @Autowired
     private SeatService seatService;  // Inyectar SeatService
+    @Autowired
+    private TokenService tokenService;
 
 
     public List<Reservation> getAllReservations() {
@@ -45,23 +48,50 @@ public class ReservationService {
     }
 
 
-    public void reserveSeats(User user, List<SeatId> seatIds, ShowTime showtime) throws SeatNotAvailableException {
-        Reservation reservation = new Reservation();
-        reservation.setUser(user);
-        reservation.setShowtime(showtime);
-        reservation.setDate(showtime.getShowtimeDate());
+    @Transactional
+    public Reservation reserveSeats(String token, List<SeatId> seatIds, ShowTime showtime) throws SeatNotAvailableException, SeatNotFoundException, InvalidCredentialsException {
+            // Paso 1: Verificar si el usuario está autenticado
+            String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+            Optional<User> userFromToken = tokenService.getUserFromToken(actualToken);
+            User user = userFromToken.orElseThrow(() -> new InvalidCredentialsException("Invalid token"));
 
-        for (SeatId seatId : seatIds) {
-            // Delegar la lógica de reserva del asiento a SeatService
-            Seat seat = seatService.reserveSeat(seatId);
+            // Paso 2: Verificar disponibilidad de los asientos en el contexto del ShowTime
+            for (SeatId seatId : seatIds) {
+                Optional<Seat> seatOptional = seatRepository.findById(seatId);
+                if (!seatOptional.isPresent()) {
+                    throw new SeatNotFoundException("Seat with ID: " + seatId + " not found");
+                }
+                Seat seat = seatOptional.get();
 
-            // Crear el detalle de la reserva
-            ReservationDetail reservationDetail = new ReservationDetail();
-            reservationDetail.setReservation(reservation);
-            reservationDetail.setSeat(seat);
-            reservationDetailRepository.save(reservationDetail);
-        }
-        reservationRepository.save(reservation);
+                // Verificar si el asiento está reservado para este showtime
+                boolean isSeatTaken = reservationDetailRepository.existsBySeatIdAndShowtime(seatId, showtime);
+                if (isSeatTaken) {
+                    throw new SeatNotAvailableException("Seat with ID: " + seatId + " is already taken for this showtime");
+                }
+            }
+
+            // Paso 3: Crear la reserva
+            Reservation reservation = new Reservation();
+            reservation.setUser(user);
+            reservation.setShowtime(showtime);
+            reservation.setDate(new Date()); // fecha actual
+
+            Reservation savedReservation = reservationRepository.save(reservation);
+
+            // Paso 4: Actualizar los asientos y crear detalles de la reserva
+            for (SeatId seatId : seatIds) {
+                Seat seat = seatRepository.findById(seatId).get();
+                seat.setAvailable(false);  // Marcar el asiento como no disponible solo para este showtime
+
+                // Crear los detalles de la reserva
+                ReservationDetail detail = new ReservationDetail();
+                detail.setReservation(savedReservation);
+                detail.setSeat(seat);
+                detail.setShowtime(showtime);  // Asociar el showtime
+                reservationDetailRepository.save(detail);
+            }
+
+            return savedReservation;
     }
 
 

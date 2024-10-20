@@ -53,5 +53,6 @@ public class ShowtimeService {
                 .collect(Collectors.groupingBy(showTime -> showTime.getBillboard().getCinema()));
     }
 
+
 }
 

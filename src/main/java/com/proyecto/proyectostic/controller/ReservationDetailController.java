@@ -14,6 +14,7 @@ public class ReservationDetailController {
     @Autowired
     private ReservationDetailService reservationDetailService;
 
+
     @GetMapping
     public List<ReservationDetail> getAllReservationDetails() {
         return reservationDetailService.getAllReservationDetails();
