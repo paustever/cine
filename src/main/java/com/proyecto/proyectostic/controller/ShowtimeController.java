@@ -4,7 +4,6 @@ import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.model.Seat;
 import com.proyecto.proyectostic.model.ShowTime;
-import com.proyecto.proyectostic.model.ShowTimeId;
 import com.proyecto.proyectostic.service.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,30 +26,21 @@ public class ShowtimeController {
         return showtimeService.getAllShowtimes();
     }
 
-    @GetMapping("/{movieId}/{showtimeDate}/{roomId}")
-    public ShowTime getShowtimeById(@PathVariable Integer movieId,
-                                    @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date showtimeDate,
-                                    @PathVariable Integer roomId) {
-
-        ShowTimeId showTimeId = new ShowTimeId(movieId, showtimeDate, roomId);
-        return showtimeService.getShowtimeById(showTimeId);
-    }
+//    @GetMapping("/{id}")
+//    public ShowTime getShowtimeById(@PathVariable Integer id) {
+//        return showtimeService.getShowtimeById(id);
+//    }
 
     @PostMapping
     public ShowTime createShowtime(@RequestBody ShowTime showtime) {
         return showtimeService.saveShowtime(showtime);
     }
 
-    @DeleteMapping("/{movieId}/{showtimeDate}/{roomId}")
-    public void deleteShowtime(@PathVariable Integer movieId,
-                               @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date showtimeDate,
-                               @PathVariable Integer roomId) {
 
-        ShowTimeId showTimeId = new ShowTimeId(movieId, showtimeDate, roomId);
-        showtimeService.deleteShowtime(showTimeId);
-    }
-
-
+//    @DeleteMapping("/{id}")
+//    public void deleteShowtime(@PathVariable Integer id) {
+//        showtimeService.deleteShowtime(id);
+//    }
     @GetMapping("/movie/{movieId}")
     public Map<Cinema, List<ShowTime>> getShowTimesByMovie(@PathVariable Integer movieId) {
         Movie movie = new Movie();

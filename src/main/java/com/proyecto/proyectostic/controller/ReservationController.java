@@ -1,6 +1,10 @@
 package com.proyecto.proyectostic.controller;
 
+import com.proyecto.proyectostic.excepcion.SeatNotAvailableException;
+import com.proyecto.proyectostic.excepcion.SeatNotFoundException;
 import com.proyecto.proyectostic.model.Reservation;
+import com.proyecto.proyectostic.model.SeatId;
+import com.proyecto.proyectostic.model.ShowTime;
 import com.proyecto.proyectostic.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +46,19 @@ public class ReservationController {
             return ResponseEntity.ok("Reservation cancelled successfully");
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+    @PostMapping("/reserve")
+    public ResponseEntity<?> reserveSeats(@RequestHeader("Authorization") String token,
+                                          @RequestBody List<SeatId> seatIds,
+                                          @RequestBody ShowTime showtime) {
+        try {
+            Reservation reservation = reservationService.reserveSeats(token, seatIds, showtime);
+            return ResponseEntity.ok(reservation);
+        } catch (SeatNotAvailableException | SeatNotFoundException e) {
+            return ResponseEntity.status(400).body(e.getMessage());  // Error por asientos no disponibles o no encontrados
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred while processing the reservation.");
         }
     }
 }

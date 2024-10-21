@@ -36,6 +36,7 @@ public class RoomController {
         return roomService.saveRoom(room);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Integer id) {
         roomService.deleteRoom(id);

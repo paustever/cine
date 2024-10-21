@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 public class Reservation {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")

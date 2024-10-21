@@ -32,11 +32,8 @@ public class BillboardService {
     private ShowtimeRepository showTimeRepository;
 
     public List<Movie> getMoviesFromBillboard(Integer billboardId) {
-
         Billboard billboard = billboardRepository.findById(billboardId)
-                .orElseThrow(() -> {
-                    throw new BillboardNotFoundException("Cartelera con ID " + billboardId + " no encontrada");
-                });
+                .orElseThrow(() -> new BillboardNotFoundException("Cartelera con ID " + billboardId + " no encontrada"));
 
         List<ShowTime> showTimes = billboard.getShowTimes();
         List<Movie> movies = new ArrayList<>();
@@ -163,19 +160,6 @@ public class BillboardService {
     public List<Billboard> getAvailableBillboards() {
         Date currentDate = new Date(); // Fecha actual
         return billboardRepository.findAvailableBillboards(currentDate);
-    }
-
-    public List<Cinema> getCinemasByMovie(Integer movieId) {
-        List<Billboard> billboards = billboardRepository.findAll();
-        List<Cinema> cinemas = new ArrayList<>();
-        for (Billboard billboard : billboards) {
-            for (ShowTime showTime : billboard.getShowTimes()) {
-                if (showTime.getMovie().getMovieId().equals(movieId) && !cinemas.contains(billboard.getCinema())) {
-                    cinemas.add(billboard.getCinema());
-                }
-            }
-        }
-        return cinemas;
     }
 
 

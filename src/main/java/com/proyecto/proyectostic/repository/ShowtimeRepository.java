@@ -20,5 +20,6 @@ public interface ShowtimeRepository extends JpaRepository<ShowTime, ShowTimeId> 
 
 
 
+
 }
 
