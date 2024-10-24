@@ -58,14 +58,7 @@ public class ShowtimeController {
         // Cambiar la lógica para comparar solo las fechas (ignorando la hora)
         return showtimeService.getShowTimesByMovieAndDate(movie, date);
     }
-    @GetMapping("/{showtimeId}/available-seats")
-    public ResponseEntity<List<Seat>> getAvailableSeats(@PathVariable Integer showtimeId) {
-        List<Seat> availableSeats = showtimeService.getAvailableSeatsForShowtime(showtimeId);
-        if (availableSeats.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(availableSeats);
-    }
+
 
 
 

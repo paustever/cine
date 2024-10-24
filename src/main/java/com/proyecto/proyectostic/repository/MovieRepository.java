@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
         boolean existsByName(String name);
-        List<Movie> findByGenre(String genre);
 
 }
 

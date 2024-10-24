@@ -36,7 +36,4 @@ public class MovieService {
         }
         return movieRepository.save(movie);
     }
-    public List<Movie> getMoviesByGenre(String genre) {
-        return movieRepository.findByGenre(genre);
-    }
 }

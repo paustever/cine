@@ -55,13 +55,6 @@ public class MovieController {
         return imagePath; // Esto se puede usar luego como coverImageUrl
 
     }
-    @GetMapping("/genre/{genre}")
-    public ResponseEntity<List<Movie>> getMoviesByGenre(@PathVariable String genre) {
-        List<Movie> movies = movieService.getMoviesByGenre(genre);
-        if (movies.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(movies);
-    }
+
 
 }
