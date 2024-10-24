@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -21,18 +24,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) ; // Deshabilita CSRF para pruebas con Postman
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/users/register", "/users/login").permitAll()  // Permitir el registro y login sin autenticación
-//                        .requestMatchers("/billboards/**").permitAll()  // Permitir acceso a los endpoints de 'billboards'
-//                        .anyRequest().authenticated()  // Requiere autenticación para las demás rutas
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/users/logout")
-//                        .logoutSuccessHandler((request, response, authentication) -> {
-//                            response.setStatus(HttpServletResponse.SC_NO_CONTENT);  // 204 No Content en el logout
-//                        })
-//                );
+                .csrf(CsrfConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/**").permitAll() //al terminar con el desarrollo, solamente permitir acceso a las rutas de login y registro
+                        .anyRequest().authenticated() //requerir autenticación para todas las demás rutas
+                );
         return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5173") // Allow requests from your frontend
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow HTTP methods
+                        .allowedHeaders("*") // Allow all headers
+                        .allowCredentials(true); // Allow credentials if necessary
+            }
+        };
     }
 }

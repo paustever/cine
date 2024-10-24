@@ -101,7 +101,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<String> loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
         try {
             String token = userService.loginUser(email, password);
             return ResponseEntity.ok(token);  // Devuelve el token si el login es exitoso
@@ -109,6 +109,7 @@ public class UserController {
             return ResponseEntity.status(401).build();  // Devuelve 401 si las credenciales son incorrectas
         }
     }
+
 
     @GetMapping("/{id}/profile")
     public ResponseEntity<User> getUserProfile(
