@@ -55,4 +55,6 @@ public class MovieController {
         return imagePath; // Esto se puede usar luego como coverImageUrl
 
     }
+
+
 }
