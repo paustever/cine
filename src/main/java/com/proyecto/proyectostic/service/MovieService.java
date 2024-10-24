@@ -1,6 +1,7 @@
 package com.proyecto.proyectostic.service;
 
 import com.proyecto.proyectostic.excepcion.MovieAlreadyExistsException;
+import com.proyecto.proyectostic.excepcion.MovieNotFoundException;
 import com.proyecto.proyectostic.model.Movie;
 import com.proyecto.proyectostic.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,9 @@ public class MovieService {
             throw new MovieAlreadyExistsException("Movie with name " + movie.getName() + " already exists");
         }
         return movieRepository.save(movie);
+    }
+    public Movie findById(Integer movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with id " + movieId));
     }
 }

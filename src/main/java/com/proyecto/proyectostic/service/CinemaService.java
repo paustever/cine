@@ -1,6 +1,7 @@
 package com.proyecto.proyectostic.service;
 
 import com.proyecto.proyectostic.excepcion.CinemaAlreadyExistsException;
+import com.proyecto.proyectostic.excepcion.CinemaNotFoundException;
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.repository.CinemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class CinemaService {
             throw new CinemaAlreadyExistsException("Cinema with ID " + cinema.getCinemaId() + " already exists");
         }
         return cinemaRepository.save(cinema);
+    }
+
+    public Cinema findById(Integer cinemaId) {
+        return cinemaRepository.findById(cinemaId)
+                .orElseThrow(() -> new CinemaNotFoundException("Cinema not found with id " + cinemaId));
     }
 
 }

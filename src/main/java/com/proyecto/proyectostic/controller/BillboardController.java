@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 @RestController
 @RequestMapping("/billboards")
 public class BillboardController {
@@ -53,6 +52,7 @@ public class BillboardController {
         ShowTime showTime = billboardService.addMovieToBillboard(billboardId, movieId, roomId, showtimeDate);
         return ResponseEntity.ok(showTime);
     }
+
     @GetMapping("/{billboardId}/movies")
     public ResponseEntity<List<Movie>> getMoviesFromBillboard(@PathVariable Integer billboardId) {
         List<Movie> movies = billboardService.getMoviesFromBillboard(billboardId);
@@ -79,14 +79,10 @@ public class BillboardController {
         return ResponseEntity.noContent().build();
     }
 
-    // Endpoint para obtener las carteleras disponibles con horarios a partir de hoy
+    // Obtener las carteleras disponibles con horarios a partir de hoy
     @GetMapping("/available")
     public ResponseEntity<List<Billboard>> getAvailableBillboards() {
         List<Billboard> availableBillboards = billboardService.getAvailableBillboards();
         return ResponseEntity.ok(availableBillboards);
     }
-
-
-
-
 }
