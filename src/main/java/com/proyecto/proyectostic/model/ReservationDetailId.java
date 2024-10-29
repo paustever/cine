@@ -12,7 +12,6 @@ public class ReservationDetailId implements Serializable {
     public ReservationDetailId() {
     }
 
-
     public ReservationDetailId(Integer reservationId, Integer seatId) {
         this.reservationId = reservationId;
         this.seatId = seatId;
