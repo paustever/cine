@@ -12,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class ReservationService {
@@ -59,7 +62,13 @@ public class ReservationService {
         // Paso 2: Verificar la disponibilidad de todos los asientos
         List<Seat> seats = seatRepository.findAllById(seatIds);
         if (seats.size() != seatIds.size()) {
-            throw new SeatNotFoundException("One or more seats not found");
+            throw new SeatNotFoundException("Alguno de los asientos no se encontro ");
+        }
+
+        for (Seat seat : seats) {
+            if (seat.getAvailable() == null || !seat.getAvailable()) {
+                throw new SeatNotAvailableException("Seat with Room ID " + seat.getRoomId() + ", Row Number " + seat.getRowNumber() + ", and Seat Number " + seat.getSeatNumber() + " is not available");
+            }
         }
 
         for (Seat seat : seats) {
@@ -76,6 +85,7 @@ public class ReservationService {
         Reservation savedReservation = reservationRepository.save(reservation);
 
         // Paso 4: Actualizar los asientos y crear detalles de la reserva
+        List<ReservationDetail> reservationDetails = new ArrayList<>();
         for (Seat seat : seats) {
             seat.setAvailable(false); // Marcar el asiento como no disponible
             seatRepository.save(seat);
@@ -89,7 +99,10 @@ public class ReservationService {
             detail.setSeat(seat);
             detail.setShowtime(showtime); // Asociar el showtime
             reservationDetailRepository.save(detail);
+            reservationDetails.add(detail);
+
         }
+        savedReservation.setReservationDetails(reservationDetails);
 
         return savedReservation;
     }

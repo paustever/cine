@@ -1,22 +1,27 @@
 package com.proyecto.proyectostic.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@IdClass(ReservationDetailId.class)
 public class ReservationDetail {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column (name= "reservation_detail_id")
+    private Integer reservationDetailId;
+
     @Column(name = "reservation_id")
     private Integer reservationId;
 
-    @Id
+
     @Column(name = "seat_id")
     private Integer seatId;
 
     @ManyToOne
     @JoinColumn(name = "reservation_id", nullable = false, insertable = false, updatable = false)
+    @JsonBackReference
     private Reservation reservation;
 
     @ManyToOne
@@ -25,18 +30,23 @@ public class ReservationDetail {
             @JoinColumn(name = "row_number", referencedColumnName = "row_number", nullable = false),
             @JoinColumn(name = "seat_number", referencedColumnName = "seat_number", nullable = false)
     })
+    @JsonIgnore
     private Seat seat;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", insertable = false, updatable = false),
-            @JoinColumn(name = "showtime_date", referencedColumnName = "showtime_date", insertable = false, updatable = false),
-            @JoinColumn(name = "room_id", referencedColumnName = "room_id", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "showtime_id", referencedColumnName = "showtime_id", insertable = false, updatable = false)
+    @JsonBackReference
     private ShowTime showtime;
 
+    public Integer getReservationDetailId() {
+        return reservationDetailId;
+    }
 
+    public void setReservationDetailId(Integer reservationDetailId) {
+        this.reservationDetailId = reservationDetailId;
+    }
 
+    // Getters y Setters
     public Integer getReservationId() {
         return reservationId;
     }
@@ -77,5 +87,3 @@ public class ReservationDetail {
         this.showtime = showtime;
     }
 }
-
-
