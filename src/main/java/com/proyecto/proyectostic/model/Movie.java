@@ -20,6 +20,7 @@ public class Movie {
     @Column(name = "year")
     private Integer year;
 
+
     @Column(name = "language")
     private String language;
 
@@ -43,8 +44,14 @@ public class Movie {
     @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "cover_image_url")
-    private String coverImageUrl;
+    @Column(name = "cover_image_base64")
+    private String coverImagebase64;
+
+
+    @Column(name = "age_rating")
+    private Integer ageRating;
+
+
 
 //    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<ShowTime> showTimes = new HashSet<>();
@@ -132,14 +139,7 @@ public class Movie {
         this.endDate = endDate;
     }
 
-    public String getCoverImageUrl() {
-        return coverImageUrl;
-    }
 
-    public void setCoverImageUrl(String coverImageUrl) {
-        this.coverImageUrl = coverImageUrl;
-    }
-//
 //    public Set<ShowTime> getShowTimes() {
 //        return showTimes;
 //    }
@@ -147,5 +147,14 @@ public class Movie {
 //    public void setShowTimes(Set<ShowTime> showTimes) {
 //        this.showTimes = showTimes;
 //    }
+
+
+    public Integer getAgeRating() {
+        return ageRating;
+    }
+
+    public void setAgeRating(Integer ageRating) {
+        this.ageRating = ageRating;
+    }
 }
 

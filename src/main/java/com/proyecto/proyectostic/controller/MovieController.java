@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movies")
@@ -55,6 +56,8 @@ public class MovieController {
         return imagePath; // Esto se puede usar luego como coverImageUrl
 
     }
+
+
 
 
 }
