@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/movies")
@@ -25,7 +26,9 @@ public class MovieController {
 
     @GetMapping
     public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+        List<Movie> movies = movieService.getAllMovies();
+        System.out.println("Returning movies: " + movies); // Add logging
+        return movies;
     }
 
     @GetMapping("/{id}")
@@ -46,15 +49,6 @@ public class MovieController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/upload")
-    public String uploadImage(@RequestParam("image") MultipartFile image) throws IOException {
-        String imagePath = "images/" + image.getOriginalFilename(); // Ruta donde se guardará la imagen
-        File dest = new File(imagePath);
-        image.transferTo(dest); // Guardar el archivo en el sistema
-
-        return imagePath; // Esto se puede usar luego como coverImageUrl
-
-    }
 
 
 }

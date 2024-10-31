@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,10 +99,17 @@ public class UserController {
         }
     }
 
-
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<String> loginUser(@RequestBody Map<String, String> loginRequest) {
         try {
+            String email = loginRequest.get("email");
+            String password = loginRequest.get("password");
+
+            // Validate that email and password are not null
+            if (email == null || password == null) {
+                return ResponseEntity.badRequest().build();
+            }
+
             String token = userService.loginUser(email, password);
             return ResponseEntity.ok(token);  // Devuelve el token si el login es exitoso
         } catch (InvalidCredentialsException e) {
