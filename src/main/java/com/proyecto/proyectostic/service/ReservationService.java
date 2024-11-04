@@ -59,20 +59,16 @@ public class ReservationService {
         User user = tokenService.getUserFromToken(actualToken)
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid token provided"));
 
-        // Paso 2: Verificar la disponibilidad de todos los asientos
+
         List<Seat> seats = seatRepository.findAllById(seatIds);
         if (seats.size() != seatIds.size()) {
-            throw new SeatNotFoundException("Alguno de los asientos no se encontro ");
+            throw new SeatNotFoundException("Alguno de los asientos no se encontró");
         }
 
-        for (Seat seat : seats) {
-            if (seat.getAvailable() == null || !seat.getAvailable()) {
-                throw new SeatNotAvailableException("Seat with Room ID " + seat.getRoomId() + ", Row Number " + seat.getRowNumber() + ", and Seat Number " + seat.getSeatNumber() + " is not available");
-            }
-        }
+        List<Seat> reservedSeats = showtime.getReservedSeats();
 
         for (Seat seat : seats) {
-            if (seat.getAvailable() == null || !seat.getAvailable()) {
+            if (reservedSeats.contains(seat)) {
                 throw new SeatNotAvailableException("Seat with Room ID " + seat.getRoomId() + ", Row Number " + seat.getRowNumber() + ", and Seat Number " + seat.getSeatNumber() + " is not available");
             }
         }
@@ -87,7 +83,7 @@ public class ReservationService {
         // Paso 4: Actualizar los asientos y crear detalles de la reserva
         List<ReservationDetail> reservationDetails = new ArrayList<>();
         for (Seat seat : seats) {
-            seat.setAvailable(false); // Marcar el asiento como no disponible
+            reservedSeats.add(seat); // Marcar el asiento como reservado
             seatRepository.save(seat);
 
             // Crear los detalles de la reserva usando ReservationDetailId

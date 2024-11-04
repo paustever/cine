@@ -33,6 +33,18 @@ public class ShowTime {
     @ManyToOne
     @JoinColumn(name = "billboard_id", nullable = false)
     private Billboard billboard;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "showtime_id")
+    @JsonManagedReference
+    private List<Seat> reservedSeats;
+
+    public List<Seat> getReservedSeats() {
+        return reservedSeats;
+    }
+
+    public void setReservedSeats(List<Seat> reservedSeats) {
+        this.reservedSeats = reservedSeats;
+    }
 
     public Integer getShowtimeId() {
         return showtimeId;
