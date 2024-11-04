@@ -1,39 +1,46 @@
 package com.proyecto.proyectostic.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.proyecto.proyectostic.model.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "showtime")
-@IdClass(ShowTimeId.class)
 public class ShowTime {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "showtime_id")
+    private Integer showtimeId;
+
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @Id
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "showtime_date")
     private Date showtimeDate;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
     @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Reservation> reservations;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "billboard_id", nullable = false)
     private Billboard billboard;
+
+    public Integer getShowtimeId() {
+        return showtimeId;
+    }
+
+    public void setShowtimeId(Integer showtimeId) {
+        this.showtimeId = showtimeId;
+    }
 
     public Movie getMovie() {
         return movie;
@@ -54,7 +61,6 @@ public class ShowTime {
     public Room getRoom() {
         return room;
     }
-
 
     public void setRoom(Room room) {
         this.room = room;

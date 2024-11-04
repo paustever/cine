@@ -1,5 +1,7 @@
 package com.proyecto.proyectostic.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -14,21 +16,21 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "movie_id", referencedColumnName = "movie_id", nullable = false),
-            @JoinColumn(name = "showtime_date", referencedColumnName = "showtime_date", nullable = false),
-            @JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = false)
-    })
+    @JoinColumn(name = "showtime_id", nullable = false)
+    @JsonBackReference
     private ShowTime showtime;
 
     @Column(name = "reservation_date")
     private Date date;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ReservationDetail> reservationDetails;
+
     public Reservation() {
     }
 
@@ -48,6 +50,14 @@ public class Reservation {
         this.user = user;
     }
 
+    public ShowTime getShowtime() {
+        return showtime;
+    }
+
+    public void setShowtime(ShowTime showtime) {
+        this.showtime = showtime;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -63,8 +73,4 @@ public class Reservation {
     public void setReservationDetails(List<ReservationDetail> reservationDetails) {
         this.reservationDetails = reservationDetails;
     }
-    public void setShowtime(ShowTime showtime) {
-        this.showtime = showtime;
-    }
-
 }
