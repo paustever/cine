@@ -139,15 +139,13 @@ public class Movie {
         this.endDate = endDate;
     }
 
+    public String getCoverImagebase64() {
+        return coverImagebase64;
+    }
 
-//    public Set<ShowTime> getShowTimes() {
-//        return showTimes;
-//    }
-//
-//    public void setShowTimes(Set<ShowTime> showTimes) {
-//        this.showTimes = showTimes;
-//    }
-
+    public void setCoverImagebase64(String coverImagebase64) {
+        this.coverImagebase64 = coverImagebase64;
+    }
 
     public Integer getAgeRating() {
         return ageRating;

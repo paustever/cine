@@ -22,8 +22,6 @@ public class Seat {
     @Column(name = "seat_number")
     private Integer seatNumber;
 
-    @Column(name = "available")
-    private Boolean available;
 
     public Seat(){
     }
@@ -52,13 +50,6 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
 
     public Integer getRoomId() {
         return roomId;
