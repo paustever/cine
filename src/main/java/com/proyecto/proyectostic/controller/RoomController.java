@@ -20,8 +20,9 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<Room> getAllRooms() {
-        return roomService.getAllRooms();
+    public ResponseEntity<List<Room>> getAllRooms() {
+        List<Room> rooms = roomService.getAllRooms();
+        return ResponseEntity.ok(rooms);
     }
 
     @GetMapping("/{id}")
@@ -32,10 +33,10 @@ public class RoomController {
     }
 
     @PostMapping
-    public Room createRoom(@RequestBody Room room) {
-        return roomService.saveRoom(room);
+    public ResponseEntity<Room> createRoom(@RequestBody Room room) {
+        Room createdRoom = roomService.saveRoom(room);
+        return ResponseEntity.ok(createdRoom);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Integer id) {
