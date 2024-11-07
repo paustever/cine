@@ -56,21 +56,7 @@ public class SeatController {
         }
     }
 
-    // Ajustar para aceptar roomId, rowNumber, seatNumber
-    @PutMapping("/{roomId}/{rowNumber}/{seatNumber}/availability")
-    public ResponseEntity<Seat> updateSeatAvailability(
-            @PathVariable Integer roomId,
-            @PathVariable Integer rowNumber,
-            @PathVariable Integer seatNumber,
-            @RequestParam Boolean available) {
-        try {
-            SeatId seatId = new SeatId(roomId, rowNumber, seatNumber);  // Crear SeatId
-            Seat updatedSeat = seatService.updateSeatAvailability(seatId, available);
-            return ResponseEntity.ok(updatedSeat);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
 
 
 

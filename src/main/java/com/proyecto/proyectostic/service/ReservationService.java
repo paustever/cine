@@ -103,7 +103,11 @@ public class ReservationService {
         return savedReservation;
     }
 
-        public void cancelReservation(Integer reservationId) throws Exception {
+        public void cancelReservation(String token, Integer reservationId) throws Exception {
+            String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+            User user = tokenService.getUserFromToken(actualToken)
+                    .orElseThrow(() -> new InvalidCredentialsException("Invalid token provided"));
+
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (!reservation.isPresent()) {
@@ -111,13 +115,11 @@ public class ReservationService {
         }
 
         Reservation reservationFound = reservation.get();
+        if (!reservationFound.getUser().equals(user)) {
+            throw new InvalidCredentialsException("User does not have permission to cancel this reservation");
+        }
         List<ReservationDetail> reservationDetails = reservationDetailRepository.findByReservationId(reservationId);
 
-        for (ReservationDetail detail : reservationDetails) {
-            Seat seat = detail.getSeat();
-            seat.setAvailable(true);
-            seatRepository.save(seat);
-        }
         reservationDetailRepository.deleteAll(reservationDetails);
         reservationRepository.delete(reservationFound);
     }

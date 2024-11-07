@@ -87,12 +87,15 @@ public class ReservationController {
     }
 
     @DeleteMapping("/cancel/{reservationId}")
-    public ResponseEntity<?> cancelReservation(@PathVariable Integer reservationId) {
+    public ResponseEntity<?> cancelReservation(@RequestHeader("Authorization") String token, @PathVariable Integer reservationId) {
         try {
-            reservationService.cancelReservation(reservationId);
+            reservationService.cancelReservation(token, reservationId);
             return ResponseEntity.ok("Reservation cancelled successfully");
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
 }
