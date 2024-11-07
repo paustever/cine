@@ -147,13 +147,7 @@ public class Movie {
         this.coverImagebase64 = coverImagebase64;
     }
 
-    public String getCoverImagebase64() {
-        return coverImagebase64;
-    }
 
-    public void setCoverImagebase64(String coverImagebase64) {
-        this.coverImagebase64 = coverImagebase64;
-    }
 
     public Integer getAgeRating() {
         return ageRating;
