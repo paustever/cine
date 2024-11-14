@@ -28,5 +28,8 @@ public interface ShowtimeRepository extends JpaRepository<ShowTime, ShowTimeId> 
     @Query("SELECT s FROM ShowTime s WHERE s.movie.movieId = :movieId AND s.room.roomId = :roomId AND s.showtimeDate = :showtimeDate")
     Optional<ShowTime> findByMovieRoomAndDate(@Param("movieId") Integer movieId, @Param("roomId") Integer roomId, @Param("showtimeDate") Date showtimeDate);
 
+
+
+    Optional<ShowTime> findByshowtimeId(Integer showtimeId);
 }
 

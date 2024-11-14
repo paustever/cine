@@ -2,6 +2,7 @@ package com.proyecto.proyectostic.controller;
 
 import com.proyecto.proyectostic.model.Cinema;
 import com.proyecto.proyectostic.model.Movie;
+import com.proyecto.proyectostic.model.Seat;
 import com.proyecto.proyectostic.model.ShowTime;
 import com.proyecto.proyectostic.service.CinemaService;
 import com.proyecto.proyectostic.service.MovieService;
@@ -86,5 +87,10 @@ public class ShowtimeController {
 
         List<ShowTime> showTimes = showtimeService.getShowTimesByMovieCinemaAndDate(movie, cinema, date);
         return ResponseEntity.ok(showTimes);
+    }
+    @GetMapping("/{showtimeId}/reserved-seats")
+    public ResponseEntity<List<Seat>> getReservedSeats(@PathVariable Integer showtimeId) {
+        List<Seat> reservedSeats = showtimeService.getReservedSeatsForShowtime(showtimeId);
+        return ResponseEntity.ok(reservedSeats);
     }
 }

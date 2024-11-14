@@ -1,9 +1,6 @@
 package com.proyecto.proyectostic.service;
 
-import com.proyecto.proyectostic.model.Cinema;
-import com.proyecto.proyectostic.model.Movie;
-import com.proyecto.proyectostic.model.ShowTime;
-import com.proyecto.proyectostic.model.ShowTimeId;
+import com.proyecto.proyectostic.model.*;
 import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +64,21 @@ public class ShowtimeService {
                 .sorted(Comparator.comparing(ShowTime::getShowtimeDate)) // Ordenar por horario
                 .collect(Collectors.groupingBy(showTime -> showTime.getBillboard().getCinema()));
     }
+
+    public List<Seat> getReservedSeatsForShowtime(Integer showtimeId) {
+        Optional<ShowTime> optionalShowTime = showtimeRepository.findByshowtimeId(showtimeId);
+        if (optionalShowTime.isPresent()) {
+            ShowTime showTime = optionalShowTime.get();
+            return showTime.getReservedSeats();
+        } else {
+            // Manejar el caso cuando no se encuentra el ShowTime
+            throw new RuntimeException("ShowTime no encontrado con ID: " + showtimeId);
+        }
+    }
+
+
+
+
 
 }
 
