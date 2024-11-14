@@ -8,10 +8,7 @@ import com.proyecto.proyectostic.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,14 +37,17 @@ public class ShowtimeService {
     }
 
     // Obtener fechas disponibles para una película en un cine específico
-    public List<Date> getAvailableDatesByMovieAndCinema(Movie movie, Cinema cinema) {
+    public List<String> getAvailableDatesByMovieAndCinema(Movie movie, Cinema cinema) {
         List<ShowTime> showTimes = showtimeRepository.findByMovieAndCinema(movie, cinema);
 
-        // Filtrar por fechas disponibles y eliminar duplicados
-        return showTimes.stream()
-                .map(ShowTime::getShowtimeDate)
-                .distinct() // Remover fechas duplicadas
-                .collect(Collectors.toList());
+        List<String> available = new ArrayList<>();
+        for (ShowTime showtime : showTimes) {
+            if (!available.contains(showtime.getShowtimeDate())) {
+                available.add(showtime.getShowtimeDate().toString());
+            }
+            // Filtrar por fechas disponibles y eliminar duplicados
+        }
+        return available;
     }
 
     // Obtener los horarios para una película en un cine en una fecha específica

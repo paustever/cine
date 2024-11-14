@@ -58,7 +58,7 @@ public class ShowtimeController {
 
     // Obtener fechas disponibles para una película en un cine específico
     @GetMapping("/by-movie-cinema/{movieId}/{cinemaId}")
-    public ResponseEntity<List<Date>> getAvailableDatesByMovieAndCinema(@PathVariable Integer movieId, @PathVariable Integer cinemaId) {
+    public ResponseEntity<List<String >> getAvailableDatesByMovieAndCinema(@PathVariable Integer movieId, @PathVariable Integer cinemaId) {
         Movie movie = movieService.findById(movieId);
         Cinema cinema = cinemaService.findById(cinemaId);
 
@@ -66,7 +66,7 @@ public class ShowtimeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        List<Date> availableDates = showtimeService.getAvailableDatesByMovieAndCinema(movie, cinema);
+        List<String> availableDates = showtimeService.getAvailableDatesByMovieAndCinema(movie, cinema);
         return ResponseEntity.ok(availableDates);
     }
 
