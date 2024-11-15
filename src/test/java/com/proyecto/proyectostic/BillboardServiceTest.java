@@ -160,31 +160,6 @@ class BillboardServiceTest {
 
 
     }
-//
-//    @Test
-//    void testGetBillboardByCinema() {
-//
-//        // Crear cine de prueba con atributos completos
-//        Cinema cinema = new Cinema();
-//        cinema.setCinemaId(1); // ID que buscas en el test
-//        cinema.setAddress("123 Street Name");
-//
-//        // Crear cartelera de prueba con atributos completos
-//        Billboard billboard = new Billboard();
-//        billboard.setBillboardId(1);
-//        billboard.setCinema(cinema); // Relación con el cine
-//
-//        // Mockear el comportamiento de los repositorios
-//        when(billboardRepository.findByCinema_CinemaId(1)).thenReturn(billboard); // Mock de la cartelera
-//        when(cinemaRepository.findById(1)).thenReturn(Optional.of(cinema)); // Mock del cine
-//
-//        // Llamar al metodo del servicio
-//        Billboard result = billboardService.getBillboardByCinema(1);
-//
-//        // Verificar el resultado
-//        assertNotNull(result);
-//        assertEquals(billboard, result);
-//    }
 
     @Test
     void TestGetAllMoviesFromAllBillboards() {
@@ -296,4 +271,6 @@ class BillboardServiceTest {
         verify(billboardRepository).findAvailableBillboards(any(Date.class));
 
     }
+
+
 }
