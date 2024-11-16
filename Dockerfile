@@ -18,7 +18,7 @@ WORKDIR /app
 VOLUME /tmp
 
 # Copy the JAR file from the build stage and rename it to app.jar
-COPY --from=build /app/target/cine-1.0.0 /app/app.jar
+COPY --from=build /app/target/cine-1.0.0.jar /app/app.jar
 
 # Start the application
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
