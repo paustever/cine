@@ -45,7 +45,7 @@ public class ReservationController {
 
             // Obtener el ShowTime usando los identificadores proporcionados
             Optional<ShowTime> showtimeOpt = showtimeRepository.findByMovieRoomAndDate(movieId, roomId, parsedShowtimeDate);
-            if (!showtimeOpt.isPresent()) {
+            if (showtimeOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Showtime not found");
             }
             ShowTime showtime = showtimeOpt.get();
@@ -62,9 +62,6 @@ public class ReservationController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
     }
-
-
-
 
     @GetMapping
     public List<Reservation> getAllReservations() {
