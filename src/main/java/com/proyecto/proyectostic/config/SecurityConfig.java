@@ -25,9 +25,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(CsrfConfigurer::disable)
+                .cors() // Habilitar CORS en Spring Security
+                .and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() //al terminar con el desarrollo, solamente permitir acceso a las rutas de login y registro
-                        .anyRequest().authenticated() //requerir autenticación para todas las demás rutas
+                        .requestMatchers("/**").permitAll() // Permitir todas las rutas temporalmente
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }
@@ -38,10 +40,10 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173") // Allow requests from your frontend
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow HTTP methods
-                        .allowedHeaders("*") // Allow all headers
-                        .allowCredentials(true); // Allow credentials if necessary
+                        .allowedOrigins("https://cineforntend.onrender.com") // Origen del frontend
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Métodos permitidos
+                        .allowedHeaders("*") // Headers permitidos
+                        .allowCredentials(true); // Permitir cookies si las usas
             }
         };
     }
