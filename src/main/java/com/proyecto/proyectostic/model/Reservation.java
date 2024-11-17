@@ -28,7 +28,7 @@ public class Reservation {
     private Date date;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("resertaions-reservationDetail")
+    @JsonManagedReference("reservations-reservationDetail")
     private List<ReservationDetail> reservationDetails;
 
     public Reservation() {
