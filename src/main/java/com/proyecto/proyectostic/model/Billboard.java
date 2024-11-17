@@ -46,6 +46,5 @@ public class Billboard {
     }
 
     public void setShowTimes(List<ShowTime> showTimes) {
-        this.showTimes = showTimes;
-    }
+        this.showTimes = showTimes;}
 }

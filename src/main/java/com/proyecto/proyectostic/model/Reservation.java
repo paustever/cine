@@ -71,6 +71,5 @@ public class Reservation {
     }
 
     public void setReservationDetails(List<ReservationDetail> reservationDetails) {
-        this.reservationDetails = reservationDetails;
-    }
+        this.reservationDetails = reservationDetails;}
 }

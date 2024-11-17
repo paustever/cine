@@ -95,6 +95,5 @@ public class ShowTime {
     }
 
     public void setBillboard(Billboard billboard) {
-        this.billboard = billboard;
-    }
+        this.billboard = billboard;}
 }

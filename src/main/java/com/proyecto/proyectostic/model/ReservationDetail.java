@@ -84,6 +84,5 @@ public class ReservationDetail {
     }
 
     public void setShowtime(ShowTime showtime) {
-        this.showtime = showtime;
-    }
+        this.showtime = showtime;}
 }
