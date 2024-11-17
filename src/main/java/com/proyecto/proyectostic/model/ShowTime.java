@@ -1,6 +1,7 @@
 package com.proyecto.proyectostic.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class ShowTime {
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
-    @JsonBackReference // Evitar la serialización del objeto Movie en ShowTime
+    @JsonIgnore
     private Movie movie;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -26,20 +27,19 @@ public class ShowTime {
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
-    @JsonBackReference // Evitar la serialización del objeto Room en ShowTime
+    @JsonIgnore// Evitar la serialización del objeto Room en ShowTime
     private Room room;
 
     @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
-    @JsonManagedReference // Serializar las reservas asociadas a ShowTime
+    @JsonManagedReference("showtime-reservations") // Serializar las reservas asociadas a ShowTime
     private List<Reservation> reservations;
 
     @ManyToOne
     @JoinColumn(name = "billboard_id", nullable = false)
-    @JsonBackReference // Evitar la serialización del objeto Billboard en ShowTime
+    @JsonBackReference("billboard-showtimes")// Evitar la serialización del objeto Billboard en ShowTime
     private Billboard billboard;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "showtime_id")
-    @JsonManagedReference
     private List<Seat> reservedSeats;
 
     public List<Seat> getReservedSeats() {

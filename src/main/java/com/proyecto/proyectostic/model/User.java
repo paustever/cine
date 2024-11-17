@@ -30,7 +30,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("user-reservations")
     private List<Reservation> reservations;
 
     public User(Integer userId, String name, String email, String password) {

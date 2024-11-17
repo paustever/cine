@@ -19,7 +19,7 @@ public class Billboard {
     private Cinema cinema;
 
     @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("billboard-showtimes")
     private List<ShowTime> showTimes = new ArrayList<>();
 
     public Billboard() {

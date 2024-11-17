@@ -21,7 +21,7 @@ public class ReservationDetail {
 
     @ManyToOne
     @JoinColumn(name = "reservation_id", nullable = false, insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference("resertaions-reservationDetail")
     private Reservation reservation;
 
     @ManyToOne
@@ -35,7 +35,7 @@ public class ReservationDetail {
 
     @ManyToOne
     @JoinColumn(name = "showtime_id", referencedColumnName = "showtime_id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonIgnore
     private ShowTime showtime;
 
     public Integer getReservationDetailId() {

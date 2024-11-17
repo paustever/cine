@@ -16,19 +16,19 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("user-reservations")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "showtime_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("showtime-reservations")
     private ShowTime showtime;
 
     @Column(name = "reservation_date")
     private Date date;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("resertaions-reservationDetail")
     private List<ReservationDetail> reservationDetails;
 
     public Reservation() {
